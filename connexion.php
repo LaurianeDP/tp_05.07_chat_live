@@ -40,33 +40,33 @@ if(isset($_POST["connexionBtn"]))
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat en ligne</title>
     <link rel="stylesheet" href="./bootstrap.css">
 </head>
-<div class="container">
-            <form action="connexion.php" method="POST" id="connexionForm"
-                class="formulaire rounded-3 mx-auto p-2 p-md-auto mb-4 py-4">
-                <fieldset id="connexionFormInputs" class="mt-3 mb-4 p-2">
-                    <h4 class="offset-md-2 my-0">Connexion</h4>
-                    <div class="row g-3 my-1">
-                        <div class="col-8 col-lg-4 offset-md-2">
-                            <label for="nom" class="form-label">Email</label>
-                            <input type="text" class="form-control" name="pseudo" id="Votre pseudo" placeholder="Nom" required>
-                            <div class="invalid-feedback">Veuillez renseigner ce champ</div>
-                        </div>
-                        <div class="col-8 col-lg-3 offset-2">
-                            <label for="adresse" class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control" name="mdp" id="mdpUtil" placeholder="Password" required>
-                            <div class="invalid-feedback">Veuillez renseigner ce champ</div>
-                        </div>
-                    </div>
-                </fieldset>
-                </fieldset>
-                    <button type="submit" name="connexionBtn" id="connexionBtn" class="btn btn-primary offset-md-2 mt-1 mb-2">Me connecter</button>
-                </fieldset>
-            </form>
-            <?=$_SESSION['erreurConnexion']?>
+
+<body class="m-5 p-5">
+    <form action="index.php" method="POST" class="row g-3">
+        <div class="col-md-12">
+            <div class="col-md-4 mx-auto">
+                <label for="inputEmail4" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" required="required" id="inputEmail4">
+            </div>
         </div>
+        <div class="col-md-12">
+            <div class="col-md-4 mx-auto">
+                <label for="inputPassword4" class="form-label">Mot de passe</label>
+                <input type="password" class="form-control" name="mdp" required="required" id="inputPassword4">
+            </div>
+        </div>
+        <div class="col-md-12 mx-auto">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Connexion</button>
+            </div>
+        </div>
+    </form>
+    <?=$_SESSION['erreurConnexion']?>
+    </div>
