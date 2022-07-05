@@ -1,6 +1,6 @@
 <?php
-include_once "http://localhost/Dev/TP/Test_js/tp_05.07_chat_live/connect.php";
-include_once "http://localhost/Dev/TP/Test_js/tp_05.07_chat_live/htmlHeader.php";
+include_once "tp_05.07_chat_live/connect.php";
+include_once "tp_05.07_chat_live/htmlHeader.php";
 
 $_SESSION['erreurConnexion'] ="";
 
