@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-DEFINE("BDD", "dw_news");
+DEFINE("BDD", "dw_chat");
 DEFINE("USER", "root");
 DEFINE("HOST", "localhost");
 DEFINE("PASSW", "");
