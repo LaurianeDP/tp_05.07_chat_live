@@ -6,9 +6,3 @@
     <title>Chat en ligne</title>
     <link rel="stylesheet" href="./bootstrap.css">
 </head>
-<body>
-    <h1>Modifie quelque chose</h1>
-    <p>Une modification lauriane aussi</p>
-    <p>Une modification ici aussi</p>
-</body>
-</html>
