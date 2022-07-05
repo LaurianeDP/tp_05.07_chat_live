@@ -1,6 +1,19 @@
 <?php
-include_once "tp_05.07_chat_live/connect.php";
-include_once "tp_05.07_chat_live/htmlHeader.php";
+session_start();
+
+DEFINE("BDD", "dw_chat");
+DEFINE("USER", "root");
+DEFINE("HOST", "localhost");
+DEFINE("PASSW", "");
+DEFINE("CHARSET", "utf8mb4");
+
+// test BDD
+try {
+    $connexion= new PDO ("mysql:host=".HOST.";dbname=".BDD.";charset=utf8", USER, PASSW, array(PDO::ATTR_ERRMODE => PDO:: ERRMODE_EXCEPTION));
+}
+catch (PDOException $exception) {
+    die('Erreur fonction connexion : ' . $exception->getMessage());
+}
 
 $_SESSION['erreurConnexion'] ="";
 
@@ -25,7 +38,14 @@ if(isset($_POST["connexionBtn"]))
         };
     }
 ?>
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat en ligne</title>
+    <link rel="stylesheet" href="./bootstrap.css">
+</head>
 <div class="container">
             <form action="connexion.php" method="POST" id="connexionForm"
                 class="formulaire rounded-3 mx-auto p-2 p-md-auto mb-4 py-4">
