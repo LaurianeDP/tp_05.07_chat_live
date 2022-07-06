@@ -34,6 +34,14 @@
                         </div>
                         <!-- Ici le mini menu de deconnexion et d'accès à la page profil -->
                         <div class="col-12">
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body col-12">
+                                    <form action="index.php" method="POST">
+                                        <input type="number" name="id_ami" id="id_ami" placeholder="Ami #">
+                                        <button type="submit" name="add_ami" class="btn btn-primary">Ajouter</button>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="accordion" id="mini-menu">
                                 <div class="accordion-item bg-secondary">
                                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -45,14 +53,23 @@
                                                 <div class="col-4 p-1 text-wrap">
                                                     Bouton profil
                                                 </div>
-                                                <div class="col-4 p-1 text-wrap">
-                                                    bouton ajout ami
+                                                <!-- Ici le bouton pour ajouter un ami, déclenche un autre accordéon qui affiche le input de l'id de l'ami à ajouter-->
+                                                <div class="col-4">
+                                                    <div class="accordion" id="input_ami">
+                                                        <div class="accordion-item bg-secondary">
+                                                            <h2 class="accordion-header" id="headingTwo">
+                                                            <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                ami button
+                                                            </button>
+                                                            </h2>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                         mini-menu button
                                     </button>
                                     </h2>
