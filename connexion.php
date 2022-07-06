@@ -3,6 +3,11 @@ include_once "connect.php";
 
 $_SESSION['erreurConnexion'] ="";
 
+if(isset($_SESSION["utilisateur"]) && $_SESSION['utilisateur']="connected") //Si l'utilisateur est connecté, renvoit à la page principale
+{
+    header('Location: ./index.php');
+}
+
 if(isset($_POST["connexionBtn"])) 
     {
         $sql = "SELECT * FROM `utilisateurs` WHERE email=:email AND mdp=:pass";
