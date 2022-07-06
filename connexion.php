@@ -49,24 +49,29 @@ if(isset($_POST["connexionBtn"]))
 </head>
 
 <body class="m-5 p-5">
+    <div class="hauteur">
+        </div class="d-flex justify-content-center">
     <form action="index.php" method="POST" class="row g-3">
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
             <div class="col-md-4 mx-auto">
                 <label for="inputEmail4" class="form-label">Email</label>
                 <input type="email" class="form-control" name="email" required="required" id="inputEmail4">
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 p-0">
             <div class="col-md-4 mx-auto">
                 <label for="inputPassword4" class="form-label">Mot de passe</label>
                 <input type="password" class="form-control" name="mdp" required="required" id="inputPassword4">
             </div>
         </div>
-        <div class="col-md-12 mx-auto">
-            <div class="col-12">
+        <div class="col-md-4 mx-auto p-0 mt-4">
+            <div class="">
                 <button type="submit" class="btn btn-primary">Connexion</button>
             </div>
         </div>
     </form>
+</div>
+    </div>
+
     <?=$_SESSION['erreurConnexion']?>
     </div>
