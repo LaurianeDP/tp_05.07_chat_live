@@ -56,7 +56,7 @@ if(isset($_POST["connexionBtn"]))
 <body class="m-5 p-5 hauteur">
     <div class="container h-100">
         <div class="row align-items-center h-100">
-            <form action="index.php" method="POST" class="row g-3 mb-5">
+            <form action="connexion.php" method="POST" class="row g-3 mb-5">
                 <div class="col-md-12 p-0">
                     <div class="col-md-4 mx-auto">
                         <label for="inputEmail4" class="form-label">Email</label>
@@ -71,7 +71,7 @@ if(isset($_POST["connexionBtn"]))
                 </div>
                 <div class="col-md-4 mx-auto p-0 mt-4">
                     <div class="">
-                        <button type="submit" class="btn btn-primary">Connexion</button>
+                        <button type="submit" class="btn btn-primary" name="connexionBtn">Connexion</button>
                     </div>
                 </div>
             </form>
