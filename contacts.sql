@@ -1,0 +1,1 @@
+INSERT INTO `contact_lists` (`id_contact_list`, `id_user1`, `id_user2`) VALUES (NULL, '2', '5'), (NULL, '2', '6'), (NULL, '3', '8'), (NULL, '3', '10'), (NULL, '3', '6'), (NULL, '4', '5'), (NULL, '4', '8'), (NULL, '6', '11'), (NULL, '6', '9'), (NULL, '6', '8'), (NULL, '10', '2'), (NULL, '10', '5'), (NULL, '11', '3');

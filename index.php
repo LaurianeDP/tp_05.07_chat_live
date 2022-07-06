@@ -6,8 +6,8 @@
     {
         header('Location: ./connexion.php');
     }
-
-    
+    //SQL à modifier
+    $sql="SELECT 'id_user1.contact_lists', 'id_user2.contact_lists', if(id_user1.contact_lists=3, id_user2.contact_lists, id_user1.contact_lists) AS 'amis' FROM `contact_lists` WHERE id_user1.contact_lists=3 OR id_user2.contact_lists=3;"
 ?>
 
 <body>
