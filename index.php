@@ -6,6 +6,8 @@
     {
         header('Location: ./connexion.php');
     }
+
+    
 ?>
 
 <body>
@@ -34,32 +36,32 @@
                         </div>
                         <!-- Ici le mini menu de deconnexion et d'accès à la page profil -->
                         <div class="col-12">
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                <div class="accordion-body col-12">
-                                    <form action="index.php" method="POST">
-                                        <input type="number" name="id_ami" id="id_ami" placeholder="Ami #">
-                                        <button type="submit" name="add_ami" class="btn btn-primary">Ajouter</button>
+                            <div id="collapseTwo" class="accordion-collapse collapse m-0" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body border-0 col-12 p-0">
+                                    <form action="index.php" class="d-flex flex-column" method="POST">
+                                        <input type="number" class="form-control" name="id_ami" id="id_ami" placeholder="Ami #">
+                                        <button type="submit" name="add_ami" class="btn btn-outline-info btn-sm mt-1 justify-self-end m-0">Ajouter</button>
                                     </form>
                                 </div>
                             </div>
-                            <div class="accordion" id="mini-menu">
-                                <div class="accordion-item bg-secondary">
+                            <div class="accordion border-0" id="mini-menu">
+                                <div class="accordion-item bg-secondary border-0">
                                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="row">
-                                                <div class="col-4 p-1 text-break">
-                                                    Bouton déconnexion
+                                                <div class="btn btn-light rounded-0 col-4 d-flex align-items-center justify-content-center">
+                                                    <i class="fa-solid fa-person-through-window text-dark fs-4"></i>
                                                 </div>
-                                                <div class="col-4 p-1 text-wrap">
-                                                    Bouton profil
+                                                <div class="btn rounded-0 col-4 btn-light d-flex align-items-center justify-content-center">
+                                                    <i class="fa-solid text-dark fa-user-ninja fs-4"></i>
                                                 </div>
                                                 <!-- Ici le bouton pour ajouter un ami, déclenche un autre accordéon qui affiche le input de l'id de l'ami à ajouter-->
-                                                <div class="col-4">
+                                                <div class=" btn rounded-0 col-4 btn-light d-flex align-items-center justify-content-center">
                                                     <div class="accordion" id="input_ami">
-                                                        <div class="accordion-item bg-secondary">
-                                                            <h2 class="accordion-header" id="headingTwo">
-                                                            <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                ami button
+                                                        <div class="accordion-item bg-secondary border-0">
+                                                            <h2 class="accordion-header p-0 bg-light border-0" id="headingTwo">
+                                                            <button class="bg-light p-0 border-0 rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                <i class="fa-solid text-dark fa-user-plus fs-4"></i>
                                                             </button>
                                                             </h2>
                                                         </div>
@@ -69,8 +71,8 @@
                                         </div>
                                     </div>
                                     <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                        mini-menu button
+                                    <button class="btn btn-sm ms-1 bg-light collapsed text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        <i class="fa-solid fa-burger fs-4"></i>
                                     </button>
                                     </h2>
                                 </div>
@@ -78,13 +80,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-9" id="main">
-                    <div class="row">
-                        <div class="col-12">
+                <!-- La section principale avec les messages -->
+                <div class="col-9 d-flex m-0 p-0" id="main">
+                    <div class="row p-0 m-0 w-100">
+                        <div class="col-12 align-self-center px-4">
+                            <!-- Ici de l'ajax pour afficher les messages au fur et à mesure qu'ils sont envoyés -->
                             messages
                         </div>
-                        <div class="col-12">
-                            Input text
+                        <div class="col-10 offset-1 align-self-end">
+                            <form action="index.php" method="POST" class="d-flex">
+                                <input type="text" class="form-control" name="messageToSend" id="inputMessage" placeholder="Entrez votre message ici">
+                                <button type="submit" name="SendMessage" class="btn fs-4"><i class="fa-solid fa-paper-plane"></i></button>
+                            </form>
                         </div>
                     </div>
                 </div>
