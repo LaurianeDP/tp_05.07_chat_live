@@ -30,9 +30,9 @@
         .messages {
             max-width: 70vh;
         }
-        .left-menu {
-            max-width: 80vh;
-        }
+        /* .left-menu {
+            max-width: 50vh;
+        } */
 
     </style>
     <script src="https://kit.fontawesome.com/34451dc3f2.js" crossorigin="anonymous"></script>
