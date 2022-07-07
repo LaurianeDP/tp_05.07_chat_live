@@ -19,6 +19,10 @@
             height: 6vh;
             width: 6vh;
         }
+        .min-width {
+            min-width: 50px;
+            min-height: 50px;
+        }
 
     </style>
     <script src="https://kit.fontawesome.com/34451dc3f2.js" crossorigin="anonymous"></script>
