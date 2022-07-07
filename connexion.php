@@ -3,7 +3,7 @@ include_once "connect.php";
 
 $_SESSION['erreurConnexion'] ="";
 
-if(isset($_SESSION["utilisateur"]) && $_SESSION['utilisateur']="connected") //Si l'utilisateur est connecté, renvoit à la page principale
+if(isset($_SESSION["utilisateur"]) && $_SESSION['utilisateur']="connected" && !empty($_SESSION['util_connect'])) //Si l'utilisateur est connecté, renvoit à la page principale
 {
     header('Location: ./index.php');
 }
