@@ -1,29 +1,15 @@
 <?php
     include_once "connect.php";
 
-    DEFINE("BDD", "dw_chat");
-	DEFINE("USER", "root");
-	DEFINE("HOST", "localhost");
-	DEFINE("PASSW", "");
-	DEFINE("CHARSET", "utf8mb4");
-
-    try {
-        $connexion= new PDO ("mysql:host=".HOST.";dbname=".BDD.";charset=utf8", USER, PASSW, array(PDO::ATTR_ERRMODE => PDO:: ERRMODE_EXCEPTION));
-    }
-    catch (PDOException $exception) {
-        die('Erreur fonction connexion : ' . $exception->getMessage());
-    }
-
     if($_SERVER['REQUEST_METHOD']==='POST') {
-        if($_POST['action']=='bouton' && !empty($_POST['email']) && !empty($_POST['pseudo']) && !empty($_POST['nom_complet']) && !empty($_POST['mdp'])) {
+        if(isset($_POST['connexionBtn']) && !empty($_POST['email']) && !empty($_POST['pseudo']) && !empty($_POST['nom_complet']) && !empty($_POST['mdp'])) {
             $sql="INSERT INTO utilisateurs (email, pseudo, nom_complet, mdp) VALUES (:email, :pseudo, :nom_complet, :mdp)";
-            echo $sql;
             $requete=$connexion->prepare($sql);
             $requete->execute(array(
                 ':email' => $_POST['email'],
                 ':pseudo' => $_POST['pseudo'],
                 ':nom_complet' => $_POST['nom_complet'],
-                ':mdp' => $_POST['mdp'],
+                ':mdp' => password_hash($_POST['mdp'], PASSWORD_DEFAULT)
             ));
         }
     }
@@ -36,7 +22,7 @@
 
         <div class="container h-100 row align-items-center m-0">
 
-            <form action="connexion.php" method="POST" class="row d-flex justify-content-center m-0 col-12">
+            <form action="inscription.php" method="POST" class="row d-flex justify-content-center m-0 col-12">
                 <div class="col-8 col-lg-4 mx-2">
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Email</label>
@@ -59,7 +45,7 @@
 
                 <div class="row col-1 mx-2">
                     <div class="col-4 my-auto">
-                        <button type="" id="bouton" class="btn btn-primary d-flex align-items-center justify-content-center min-width" name="connexionBtn">
+                        <button type="submit" id="bouton" class="btn btn-primary d-flex align-items-center justify-content-center min-width" name="connexionBtn">
                             <i class="fa-solid fa-paper-plane fs-2"></i>
                         </button>
                     </div>

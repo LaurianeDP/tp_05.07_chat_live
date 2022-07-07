@@ -14,7 +14,7 @@ if(isset($_POST["connexionBtn"]))
         $requete = $connexion->prepare($sql);
         $requete->execute(array(
             ':email' => $_POST['email'],
-            ':pass' => $_POST['mdp']
+            ':pass' => password_hash($_POST['mdp'])
         ));
         $resultat = $requete->fetch();
         if(!$resultat)
@@ -29,6 +29,7 @@ if(isset($_POST["connexionBtn"]))
             exit;
         };
     }
+
     include_once "header_html.php"
 ?>
 
@@ -52,7 +53,7 @@ if(isset($_POST["connexionBtn"]))
 
                 <div class="row col-1 mx-2">
                     <div class="col-4 my-auto">
-                        <button type="" id="bouton" class="btn btn-primary d-flex align-items-center justify-content-center min-width" name="connexionBtn">
+                        <button type="submit" id="bouton" class="btn btn-primary d-flex align-items-center justify-content-center min-width" name="connexionBtn">
                             <i class="fa-solid fa-paper-plane fs-2"></i>
                         </button>
                     </div>
