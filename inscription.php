@@ -1,5 +1,28 @@
 <?php
     include_once "connect.php";
+
+    var_dump($_SESSION);
+
+    DEFINE("BDD", "dw_chat");
+	DEFINE("USER", "root");
+	DEFINE("HOST", "localhost");
+	DEFINE("PASSW", "");
+	DEFINE("CHARSET", "utf8mb4");
+
+    if($_SERVER['REQUEST_METHOD']==='POST') {
+        if($_POST['action']=='bouton' && !empty($_POST['email']) && !empty($_POST['pseudo']) && !empty($_POST['nom_complet']) && !empty($_POST['mdp'])) {
+            $sql="INSERT INTO utilisateurs (email, pseudo, nom_complet, mdp) VALUES (:email, :pseudp, :nom_complet, :mdp)";
+            echo $sql;
+            $requete=$connexion->prepare($sql);
+            $requete->execute(array(
+                ':email' => $_POST['email'],
+                ':pseudo' => $_POST['pseudo'],
+                ':nom_complet' => $_POST['nom_complet'],
+                ':mdp' => $_POST['mdp'],
+            ));
+        }
+    }
+
     include_once "header_html.php"
 ?>
 
@@ -16,11 +39,11 @@
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Pseudo</label>
-                        <input type="text" class="form-control" name="email" required="required" id="inputEmail4">
+                        <input type="text" class="form-control" name="pseudo" required="required" id="inputEmail4">
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Nom complet</label>
-                        <input type="text" class="form-control" name="email" required="required" id="inputEmail4">
+                        <input type="text" class="form-control" name="nom_complet" required="required" id="inputEmail4">
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputPassword4" class="form-label">Mot de passe</label>
