@@ -16,7 +16,7 @@ if(isset($_POST["connexionBtn"]))
             ':email' => $_POST['email'],
             ':pass' => $_POST['mdp']
         ));
-        $resultat = $requete->fetchAll();
+        $resultat = $requete->fetch();
         if(!$resultat)
         {
             $_SESSION['erreurConnexion'] = '<p class="text-warning mx-5 fs-3 text-center">Identifiants erronés<p>';
@@ -24,6 +24,7 @@ if(isset($_POST["connexionBtn"]))
         }
         else {
             $_SESSION['utilisateur'] = "connected"; //set connexion de l'utilisateur vraie
+            $_SESSION['util_connect'] = $resultat['id_user']; //set connexion de l'utilisateur à son id
             header('Location: ./index.php');
             exit;
         };

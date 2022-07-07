@@ -6,8 +6,16 @@
     {
         header('Location: ./connexion.php');
     }
-    //SQL à modifier
-    $sql="SELECT 'id_user1.contact_lists', 'id_user2.contact_lists', if(id_user1.contact_lists=3, id_user2.contact_lists, id_user1.contact_lists) AS 'amis' FROM `contact_lists` WHERE id_user1.contact_lists=3 OR id_user2.contact_lists=3;"
+    $utilisateur=$_SESSION['util_connect'];
+
+    //SQL sélection liste d'amis
+    $sql="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=$utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_$utilisateur', utilisateurs.pseudo, utilisateurs.id_user FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=$utilisateur OR contact_lists.id_user2=$utilisateur HAVING utilisateurs.id_user=amis_$utilisateur ORDER BY utilisateurs.pseudo;";
+    $requete=$connexion->prepare($sql);
+    $requete->execute();
+    while ($ami= $requete->fetch()) {
+        $ami_pseudo=$ami['pseudo'];
+    };
+
 ?>
 
 <body>
@@ -33,6 +41,7 @@
                         <div class="col-12">
                             liste d'amis
                             <!-- Du PHP pour afficher la liste d'amis et les conversation liées si nécessaire -->
+                            <p><?=$ami_pseudo?></p>
                         </div>
                         <!-- Ici le mini menu de deconnexion et d'accès à la page profil -->
                         <div class="col-12">
