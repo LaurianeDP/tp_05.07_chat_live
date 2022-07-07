@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 05 juil. 2022 à 17:07
+-- Généré le : jeu. 07 juil. 2022 à 09:25
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -29,9 +29,30 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `contact_lists` (
   `id_contact_list` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_contact` int(11) NOT NULL
+  `id_user1` int(11) NOT NULL,
+  `id_user2` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `contact_lists`
+--
+
+INSERT INTO `contact_lists` (`id_contact_list`, `id_user1`, `id_user2`) VALUES
+(1, 2, 3),
+(2, 3, 5),
+(3, 2, 5),
+(4, 2, 6),
+(5, 3, 8),
+(6, 3, 10),
+(7, 3, 6),
+(8, 4, 5),
+(9, 4, 8),
+(10, 6, 11),
+(11, 6, 9),
+(12, 6, 8),
+(13, 10, 2),
+(14, 10, 5),
+(15, 11, 3);
 
 -- --------------------------------------------------------
 
@@ -78,6 +99,23 @@ CREATE TABLE `utilisateurs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Déchargement des données de la table `utilisateurs`
+--
+
+INSERT INTO `utilisateurs` (`id_user`, `email`, `mdp`, `pseudo`, `photo`, `nom_complet`) VALUES
+(1, 'admin@admin.fr', 'admin', 'admin', '', 'admin'),
+(2, 'utilisateur1@mail.fr', 'test1', 'util1', '', 'utilisateur numéro un'),
+(3, 'utilisateur2@mail.fr', 'test2', 'util2', '', 'utilisateur numéro deux'),
+(4, 'utilisateur3@mail.fr', 'test3', 'util3', '', 'utilisateur numéro 3'),
+(5, 'utilisateur4@mail.fr', 'test4', 'util4', '', 'utilisateur numéro quatre'),
+(6, 'utilisateur5@mail.fr', 'test5', 'util5', '', 'utilisateur numéro cinq'),
+(7, 'utilisateur6@mail.fr', 'test6', 'util6', '', 'utilisateur numéro six'),
+(8, 'utilisateur7@mail.fr', 'test7', 'util7', '', 'utilisateur numéro sept'),
+(9, 'utilisateur8@mail.fr', 'test8', 'util8', '', 'utilisateur numéro huit'),
+(10, 'utilisateur9@mail.fr', 'test9', 'util9', '', 'utilisateur numéro neuf'),
+(11, 'utilisateur10@mail.fr', 'test10', 'util10', '', 'utilisateur numéro dix');
+
+--
 -- Index pour les tables déchargées
 --
 
@@ -85,8 +123,7 @@ CREATE TABLE `utilisateurs` (
 -- Index pour la table `contact_lists`
 --
 ALTER TABLE `contact_lists`
-  ADD PRIMARY KEY (`id_contact_list`),
-  ADD KEY `id_user` (`id_user`);
+  ADD PRIMARY KEY (`id_contact_list`);
 
 --
 -- Index pour la table `conversations`
@@ -116,7 +153,7 @@ ALTER TABLE `utilisateurs`
 -- AUTO_INCREMENT pour la table `contact_lists`
 --
 ALTER TABLE `contact_lists`
-  MODIFY `id_contact_list` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_contact_list` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `conversations`
@@ -134,7 +171,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Contraintes pour les tables déchargées
@@ -144,7 +181,7 @@ ALTER TABLE `utilisateurs`
 -- Contraintes pour la table `contact_lists`
 --
 ALTER TABLE `contact_lists`
-  ADD CONSTRAINT `contact_lists_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `utilisateurs` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `contact_lists_ibfk_1` FOREIGN KEY (`id_user1`) REFERENCES `utilisateurs` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `conversations`
