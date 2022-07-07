@@ -10,12 +10,13 @@
 
     //SQL sélection liste d'amis
     $sql="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=$utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_$utilisateur', utilisateurs.pseudo, utilisateurs.id_user FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=$utilisateur OR contact_lists.id_user2=$utilisateur HAVING utilisateurs.id_user=amis_$utilisateur ORDER BY utilisateurs.pseudo;";
-    $requete=$connexion->prepare($sql);
-    $requete->execute();
-    while ($ami= $requete->fetch()) {
-        $ami_pseudo=$ami['pseudo'];
-    };
 
+    // Requête pour récupérer le pseudo de l'utilisateur connecté
+    $sql_pseudo= "SELECT pseudo FROM utilisateurs WHERE id_user=$utilisateur";
+    $requete=$connexion->prepare($sql_pseudo);
+    $requete->execute();
+    $result= $requete->fetch();
+    $pseudo=$result['pseudo'];
 ?>
 
 <body>
@@ -27,7 +28,7 @@
                     <h3>Récents</h3>
                 </div>
                 <div class="col-7 d-flex justify-content-start">
-                    <h3>Nom de l'utilisateur</h3>
+                    <h3>Chat de <?=$pseudo?></h3>
                 </div>
                 <div class="col-2 d-flex justify-content-end">
                     <p>Logo</p>
@@ -35,13 +36,22 @@
             </div>
             <!-- Fin du header au dessus -->
             <div class="row">
-                <div class="col-3 bg-secondary text-light border-top border-dark p-2" id="contact-list">
+                <div class="col-3 bg-secondary text-light border-top border-dark p-2 lef-menu" id="contact-list">
                     <div class="row">
                         <!-- Ici la liste d'amis -->
-                        <div class="col-12">
-                            liste d'amis
-                            <!-- Du PHP pour afficher la liste d'amis et les conversation liées si nécessaire -->
-                            <p><?=$ami_pseudo?></p>
+                        <div class="col-12 amis overflow-auto">
+                            <!-- Du PHP pour afficher la liste d'amis et ajouter les conversation liées si nécessaire -->
+                            <?php
+                                $requete=$connexion->prepare($sql);
+                                $requete->execute();
+                                while ($ami= $requete->fetch()) {
+                                $ami_pseudo=$ami['pseudo'];
+                                ?>
+                                <p class="ps-2"><?=$ami_pseudo?></p>
+                                <HR>
+                            <?php
+                            };
+                            ?>
                         </div>
                         <!-- Ici le mini menu de deconnexion et d'accès à la page profil -->
                         <div class="col-12">
@@ -59,7 +69,8 @@
                                         <div class="accordion-body">
                                             <div class="row">
                                                 <div class="btn btn-light rounded-0 col-4 d-flex align-items-center justify-content-center">
-                                                    <i class="fa-solid fa-person-through-window text-dark fs-4"></i>
+                                                    <!-- Lien de déconnexion -->
+                                                    <a href="./deconnexion.php"><i class="fa-solid fa-person-through-window text-dark fs-4"></i></a>
                                                 </div>
                                                 <div class="btn rounded-0 col-4 btn-light d-flex align-items-center justify-content-center">
                                                     <i class="fa-solid text-dark fa-user-ninja fs-4"></i>
@@ -92,7 +103,7 @@
                 <!-- La section principale avec les messages -->
                 <div class="col-9 d-flex m-0 p-0" id="main">
                     <div class="row p-0 m-0 w-100">
-                        <div class="col-12 align-self-center px-4">
+                        <div class="col-12 align-self-center px-4 overflow-auto messages">
                             <!-- Ici de l'ajax pour afficher les messages au fur et à mesure qu'ils sont envoyés -->
                             messages
                         </div>
