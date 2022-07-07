@@ -1,13 +1,18 @@
 <?php
     include_once "connect.php";
 
-    var_dump($_SESSION);
-
     DEFINE("BDD", "dw_chat");
 	DEFINE("USER", "root");
 	DEFINE("HOST", "localhost");
 	DEFINE("PASSW", "");
 	DEFINE("CHARSET", "utf8mb4");
+
+    try {
+        $connexion= new PDO ("mysql:host=".HOST.";dbname=".BDD.";charset=utf8", USER, PASSW, array(PDO::ATTR_ERRMODE => PDO:: ERRMODE_EXCEPTION));
+    }
+    catch (PDOException $exception) {
+        die('Erreur fonction connexion : ' . $exception->getMessage());
+    }
 
     if($_SERVER['REQUEST_METHOD']==='POST') {
         if($_POST['action']=='bouton' && !empty($_POST['email']) && !empty($_POST['pseudo']) && !empty($_POST['nom_complet']) && !empty($_POST['mdp'])) {
@@ -35,20 +40,21 @@
                 <div class="col-8 col-lg-4 mx-2">
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" required="required" id="inputEmail4">
+                        <input type="email" class="form-control" name="email" required="required" id="inputEmail1">
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Pseudo</label>
-                        <input type="text" class="form-control" name="pseudo" required="required" id="inputEmail4">
+                        <input type="text" class="form-control" name="pseudo" required="required" id="inputEmail2">
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Nom complet</label>
-                        <input type="text" class="form-control" name="nom_complet" required="required" id="inputEmail4">
+                        <input type="text" class="form-control" name="nom_complet" required="required" id="inputEmail3">
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputPassword4" class="form-label">Mot de passe</label>
                         <input type="password" class="form-control" name="mdp" required="required" id="inputPassword4">
                     </div>
+                    <a href="./connexion.php">Déjà un compte ?</a>
                 </div>
 
                 <div class="row col-1 mx-2">
