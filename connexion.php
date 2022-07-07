@@ -14,8 +14,8 @@ if(isset($_POST["connexionBtn"]))
         $requete = $connexion->prepare($sql);
         $requete->execute(array(
             ':email' => $_POST['email'],
-            ':pass' => password_hash($_POST['mdp'])
-        ));
+            ':pass' => $_POST['mdp']),
+        );
         $resultat = $requete->fetch();
         if(!$resultat)
         {

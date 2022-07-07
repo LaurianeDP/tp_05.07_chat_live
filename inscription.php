@@ -9,7 +9,7 @@
                 ':email' => $_POST['email'],
                 ':pseudo' => $_POST['pseudo'],
                 ':nom_complet' => $_POST['nom_complet'],
-                ':mdp' => password_hash($_POST['mdp'], PASSWORD_DEFAULT)
+                ':mdp' => $_POST['mdp'],
             ));
         }
     }
