@@ -6,10 +6,10 @@
 <body class="m-5 p-5 hauteur ">
     <div class="h-100 row align-items-center">
 
-        <div class="container h-100 row align-items-center ms-0">
+        <div class="container h-100 row align-items-center m-0">
 
             <form action="connexion.php" method="POST" class="row d-flex justify-content-center m-0 col-12">
-                <div class="col-4">
+                <div class="col-8 col-lg-4 mx-2">
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Email</label>
                         <input type="email" class="form-control" name="email" required="required" id="inputEmail4">
@@ -28,9 +28,9 @@
                     </div>
                 </div>
 
-                <div class="row col-1">
+                <div class="row col-1 mx-2">
                     <div class="col-4 my-auto">
-                        <button type="submit" class="btn btn-primary" name="connexionBtn">Inscription</button>
+                        <button type="" id="bouton" class="btn btn-primary fa-solid fa-paper-plane fs-2" name="connexionBtn"></button>
                     </div>
                 </div>
 

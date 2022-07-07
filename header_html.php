@@ -15,6 +15,11 @@
         .accordion-button:not(.collapsed)::after {
             background-image: none;
         }
+        #bouton {
+            height: 6vh;
+            width: 6vh;
+        }
+
     </style>
     <script src="https://kit.fontawesome.com/34451dc3f2.js" crossorigin="anonymous"></script>
     <script src="./bootstrap.js"></script>
