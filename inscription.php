@@ -11,7 +11,7 @@
 
     if($_SERVER['REQUEST_METHOD']==='POST') {
         if($_POST['action']=='bouton' && !empty($_POST['email']) && !empty($_POST['pseudo']) && !empty($_POST['nom_complet']) && !empty($_POST['mdp'])) {
-            $sql="INSERT INTO utilisateurs (email, pseudo, nom_complet, mdp) VALUES (:email, :pseudp, :nom_complet, :mdp)";
+            $sql="INSERT INTO utilisateurs (email, pseudo, nom_complet, mdp) VALUES (:email, :pseudo, :nom_complet, :mdp)";
             echo $sql;
             $requete=$connexion->prepare($sql);
             $requete->execute(array(
