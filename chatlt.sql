@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 11 juil. 2022 à 11:39
+-- Généré le : lun. 11 juil. 2022 à 14:50
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -73,7 +73,8 @@ CREATE TABLE `conversations` (
 --
 
 INSERT INTO `conversations` (`id_conversation`, `utilisateur_1`, `utilisateur_2`) VALUES
-(1, 4, 8);
+(1, 4, 8),
+(5, 4, 5);
 
 -- --------------------------------------------------------
 
@@ -96,7 +97,16 @@ CREATE TABLE `messages` (
 
 INSERT INTO `messages` (`id_message`, `destinataire`, `emetteur`, `contenu`, `time_stamp`, `id_conversation`) VALUES
 (1, 4, 8, 'Ceci est un message de util7 à util3', '2022-07-07 09:06:57.000000', 1),
-(2, 8, 4, 'Ceci est un message de util3 à util7.', '2022-07-07 09:11:26.000000', 1);
+(2, 8, 4, 'Ceci est un message de util3 à util7.', '2022-07-07 09:11:26.000000', 1),
+(15, 8, 4, 'ceci est un message de util3 à util7 envoyé depuis la page de chat', '2022-07-11 09:53:28.568804', 1),
+(16, 8, 4, 'test 3', '2022-07-11 09:54:26.633155', 1),
+(18, 8, 4, 'test 4', '2022-07-11 10:09:46.661086', 1),
+(19, 4, 8, 'réponse 1', '2022-07-11 10:10:53.826244', 1),
+(20, 8, 4, 'réponse de réponse 1', '2022-07-11 10:11:12.381217', 1),
+(21, 8, 4, 'test', '2022-07-11 10:14:09.384212', 1),
+(22, 5, 4, 'Premier message', '2022-07-11 10:21:54.198683', 1),
+(25, 5, 4, 'Premier message à util4', '2022-07-11 12:28:20.950913', 5),
+(26, 8, 4, 'dernier message à util7', '2022-07-11 12:40:13.022458', 1);
 
 -- --------------------------------------------------------
 
@@ -128,9 +138,7 @@ INSERT INTO `utilisateurs` (`id_user`, `email`, `mdp`, `pseudo`, `photo`, `nom_c
 (8, 'utilisateur7@mail.fr', 'test7', 'util7', '', 'utilisateur numéro sept'),
 (9, 'utilisateur8@mail.fr', 'test8', 'util8', '', 'utilisateur numéro huit'),
 (10, 'utilisateur9@mail.fr', 'test9', 'util9', '', 'utilisateur numéro neuf'),
-(11, 'utilisateur10@mail.fr', 'test10', 'util10', '', 'utilisateur numéro dix'),
-(12, 'utilisateur11@mail.fr', '$2y$10$xg6o2UFv', 'util11', '', 'utilisateur numero 11'),
-(13, 'utilisateur12@mail.fr', '$2y$10$8TDHH0gRqJf1Dv2sGoo8D.Oij7qmhmPaTcGy1DgFfEbWeBdd0nnBS', 'util12', '', 'utilisateur numero 12');
+(11, 'utilisateur10@mail.fr', 'test10', 'util10', '', 'utilisateur numéro dix');
 
 --
 -- Index pour les tables déchargées
@@ -159,7 +167,8 @@ ALTER TABLE `messages`
 -- Index pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
-  ADD PRIMARY KEY (`id_user`);
+  ADD PRIMARY KEY (`id_user`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -175,29 +184,19 @@ ALTER TABLE `contact_lists`
 -- AUTO_INCREMENT pour la table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id_conversation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_conversation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- Contraintes pour les tables déchargées
---
-
---
--- Contraintes pour la table `contact_lists`
---
-ALTER TABLE `contact_lists`
-  ADD CONSTRAINT `contact_lists_ibfk_1` FOREIGN KEY (`id_user1`) REFERENCES `utilisateurs` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

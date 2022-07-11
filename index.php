@@ -95,16 +95,16 @@
                                 while ($ami= $requete->fetch()) {
                                 $ami_pseudo=$ami['pseudo'];
                                 $ami_id=$ami['id_ami'];
-                                $sql_conv= "SELECT * FROM conversations WHERE (utilisateur_1=$utilisateur OR utilisateur_2=$utilisateur) AND (utilisateur_1=$ami_id OR utilisateur_2=$ami_id)";
-                                $requete_conv=$connexion->prepare($sql_conv);
-                                $requete_conv->execute();
-                                $conv_result=$requete_conv->fetch();
-                                if(!$conv_result) {
+                                $sql_conv2= "SELECT * FROM conversations WHERE (utilisateur_1=$utilisateur OR utilisateur_2=$utilisateur) AND (utilisateur_1=$ami_id OR utilisateur_2=$ami_id)";
+                                $requete_conv2=$connexion->prepare($sql_conv2);
+                                $requete_conv2->execute();
+                                $conv_result2=$requete_conv2->fetch();
+                                if(!$conv_result2) {
                                     $id_conv="";
                                     $last_message="Pas encore de message";
                                 }
                                 else {
-                                    $id_conv=$conv_result['id_conversation'];
+                                    $id_conv=$conv_result2['id_conversation'];
                                     $sql_last_message= "SELECT contenu FROM messages WHERE id_conversation=$id_conv ORDER BY time_stamp DESC LIMIT 1";
                                     $requete_last_message=$connexion->prepare($sql_last_message);
                                     $requete_last_message->execute();
