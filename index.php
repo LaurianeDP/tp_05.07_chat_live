@@ -18,6 +18,7 @@
     $result= $requete->fetch();
     $pseudo=$result['pseudo'];
     
+    //Génère la phrase du header au clic sur le nom d'un ami
     if(isset($_GET['ami'])) {
         $id_ami=$_GET['ami'];
         $sql="SELECT pseudo FROM utilisateurs WHERE id_user=$id_ami";
@@ -30,7 +31,8 @@
     else {
         $nom_conv="";
     }
-    
+
+    //Code pour l'envoit d'un message
     if(isset($_POST['SendMessage']) && !empty($_POST['messageToSend'])) {
         $ami_id=$_POST['ami_id'];
         $id_conv=$_POST['conv_id'];
@@ -51,6 +53,22 @@
             ':contenu' => $_POST['messageToSend']
         ));
         header('location: '.$_SERVER['REQUEST_URI']);
+    }
+
+    //Code pour l'ajout d'un contact, sélectionne l'id à ajouter dans la liste à partir d'une recherche de pseudo
+    if(isset($_POST['add_friend'])&& !empty($_POST['add_friend'])) {
+        $pseudo_ami= $_POST['pseudo_ami'];
+        $sql_pseudo_ami= "SELECT id_user FROM utilisateurs WHERE pseudo=$pseudo_ami";
+        $requete_pseudo_ami=$connexion->prepare($sql_pseudo_ami);
+        $requete_pseudo_ami->execute();
+        $result_pseudo_ami=$requete_pseudo_ami->fetch();
+        if(!$result_pseudo_ami) {
+            echo "Pseudo incorrect";
+        }
+        else {
+            $id_to_add=$result_pseudo_ami['id_user'];
+            $sql_ajout_ami= "INSERT INTO contact_lists "
+        }
     }
 ?>
 
@@ -129,9 +147,10 @@
                     <div class="col-12 align-self-end">
                         <div id="collapseTwo" class="accordion-collapse collapse m-0" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                             <div class="accordion-body border-0 col-12 p-0">
+                                <!-- Formulaire d'ajout d'ami -->
                                 <form action="index.php" class="d-flex flex-column" method="POST">
-                                    <input type="number" class="form-control" name="id_ami" id="id_ami" placeholder="Ami #">
-                                    <button type="submit" name="add_ami" class="btn btn-outline-info btn-sm mt-1 justify-self-end m-0">Ajouter</button>
+                                    <input type="text" class="form-control" name="pseudo_ami" id="pseudo_ami" placeholder="Pseudo ami">
+                                    <button type="submit" name="add_friend" class="btn btn-outline-info btn-sm mt-1 justify-self-end m-0">Ajouter</button>
                                 </form>
                             </div>
                         </div>
