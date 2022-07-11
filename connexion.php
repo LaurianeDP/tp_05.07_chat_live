@@ -33,7 +33,10 @@ if(isset($_POST["connexionBtn"]))
     include_once "header_html.php"
 ?>
 
-<body class="m-5 p-5 hauteur">
+<body class="m-4 p-4 hauteur">
+    <div class="col-2 d-flex justify-content-end d-inline" style="position: absolute;">
+        <img src="./Logo.svg" alt="Logo" class="img-fluid fs-6" style="height: 50px; color: white;">
+    </div>
     <div class="h-100 row align-items-center">
 
         <div class="container h-100 row align-items-center m-0">
