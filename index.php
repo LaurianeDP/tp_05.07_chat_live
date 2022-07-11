@@ -18,30 +18,52 @@
     $result= $requete->fetch();
     $pseudo=$result['pseudo'];
     
+    if(isset($_GET['ami'])) {
+        $id_ami=$_GET['ami'];
+        $sql="SELECT pseudo FROM utilisateurs WHERE id_user=$id_ami";
+        $requete=$connexion->prepare($sql);
+        $requete->execute();
+        $result_ami= $requete->fetch();
+        $ami_pseudo=$result_ami['pseudo'];
+        $nom_conv="<h3>Conversations de $pseudo avec $ami_pseudo</h3>";
+    }
+    else {
+        $nom_conv="";
+    }
     
     if(isset($_POST['SendMessage']) && !empty($_POST['messageToSend'])) {
-        $ami_id=$_GET['ami'];
-        $id_conv=$_GET['conv'];
-        $sql_message= "INSERT INTO `messages` (`destinataire`, `emetteur`, `contenu`, `id_conversation`) VALUES (:ami, :utilisateur, :contenu, :conv)";
+        $ami_id=$_POST['ami_id'];
+        $id_conv=$_POST['conv_id'];
+        if(empty($_POST['conv_id'])) {
+            $sql_new_conv= "INSERT INTO conversations (utilisateur_1, utilisateur_2) VALUES ($utilisateur, $ami_id)";
+            $requete=$connexion->prepare($sql_new_conv);
+            $requete->execute();
+
+            $sql_last_conv_select= "SELECT MAX(id_conversation) AS 'last_id' FROM conversations";
+            $requete=$connexion->prepare($sql_last_conv_select);
+            $requete->execute();
+            $result_conv=$requete->fetch();
+            $id_conv=$result_conv['last_id'];
+        };
+        $sql_message= "INSERT INTO `messages` (`destinataire`, `emetteur`, `contenu`, `id_conversation`) VALUES ($ami_id, $utilisateur, :contenu, $id_conv)";
         $requete_mess=$connexion->prepare($sql_message);
         $requete_mess->execute(array(
-            ':ami' => $ami_id,
-            ':utilisateur' => $utilisateur,
-            ':contenu' => $_POST['messageToSend'],
-            ':conv' => $id_conv
+            ':contenu' => $_POST['messageToSend']
         ));
+        header('location: '.$_SERVER['REQUEST_URI']);
     }
 ?>
 
 <body>
 
         <div class="container">
+            <!-- Le header avec le titre de la section de gauche le nom de l'utilisateur et le logo à droite -->
             <div class="row header p-3 d-flex align-items-center text-dark" style="background-color: #F2F2F2;">
                 <div class="col-3 d-flex justify-content-center">
                     <h3>Récents</h3>
                 </div>
                 <div class="col-7 d-flex justify-content-start">
-                    <h3>Conversations de <?=$pseudo?></h3>
+                    <?=$nom_conv?>
                 </div>
                 <div class="col-2 d-flex justify-content-end">
                     <img src="./Logo.svg" alt="Logo" class="img-fluid fs-6" style="height: 50px; color: white;">
@@ -72,13 +94,29 @@
                                 $requete=$connexion->prepare($sql_ami);
                                 $requete->execute();
                                 while ($ami= $requete->fetch()) {
-                                $ami_pseudo=$ami['pseudo'];
-                                $ami_id=$ami['id_ami'];
+                                    $ami_pseudo=$ami['pseudo'];
+                                    $ami_id=$ami['id_ami'];
+                                    $sql_conv2= "SELECT * FROM conversations WHERE (utilisateur_1=$utilisateur OR utilisateur_2=$utilisateur) AND (utilisateur_1=$ami_id OR utilisateur_2=$ami_id)";
+                                    $requete_conv2=$connexion->prepare($sql_conv2);
+                                    $requete_conv2->execute();
+                                    $conv_result2=$requete_conv2->fetch();
+                                    if(!$conv_result2) {
+                                        $id_conv2="";
+                                        $last_message="Pas encore de message";
+                                    }
+                                    else {
+                                        $id_conv2=$conv_result2['id_conversation'];
+                                        $sql_last_message= "SELECT contenu FROM messages WHERE id_conversation=$id_conv2 ORDER BY time_stamp DESC LIMIT 1";
+                                        $requete_last_message=$connexion->prepare($sql_last_message);
+                                        $requete_last_message->execute();
+                                        $last_message_result=$requete_last_message->fetch();
+                                        $last_message=$last_message_result['contenu'];
+                                    };
                                 ?>
                                 <!-- Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté-->
                                 <div class="d-grid">
                                     <a class="btn border-2 text-light border-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
-                                        <p class="text-end p-0">Dernier message de la conversation</p>
+                                        <p class="text-end p-0"><?=$last_message?></p>
                                     </a>
                                 </div>
                                 <HR>
@@ -142,6 +180,7 @@
                             <?php
                                 //Requête pour récupérer tous les messages d'une conversation
                                 if(isset($_GET['ami'])) {
+                                    $ami_id=$_GET['ami'];
                                     if(empty($id_conv)) {
                                         ?>
                                         <div class="text-center mt-5 pt-5">Vous n'avez pas encore démarré de conversation avec cet utilisateur</div>
@@ -177,6 +216,10 @@
                         <div class="col-10 offset-1 align-self-end">
                             <form action="index.php" method="POST" class="d-flex">
                                 <input type="text" class="form-control" name="messageToSend" id="inputMessage" placeholder="Entrez votre message ici">
+                                <input type="hidden" name="ami_id" value="<?=$ami_id?>">
+                                <?php
+                                ?>
+                                <input type="hidden" name="conv_id" value="<?=$id_conv?>">
                                 <button type="submit" name="SendMessage" class="btn fs-4"><i class="fa-solid fa-paper-plane"></i></button>
                             </form>
                         </div>
@@ -184,6 +227,5 @@
                 </div>
             </div>
         </div>
-
 </body>
 </html>
