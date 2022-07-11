@@ -45,7 +45,7 @@
                     <h3>Conversations de <?=$pseudo?></h3>
                 </div>
                 <div class="col-2 d-flex justify-content-end">
-                    <p>Logo</p>
+                    <img src="./Logo.svg" alt="Logo" class="img-fluid fs-6" style="height: 50px; color: white;">
                 </div>
             </div>
             <!-- Fin du header au dessus -->
