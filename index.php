@@ -56,20 +56,20 @@
 
 <body>
 
-    <!-- Le header avec le titre de la section de gauche le nom de l'utilisateur et le logo à droite -->
-    <div class="row header p-3 d-flex align-items-center text-dark">
-        <div class="col-3 d-flex justify-content-center">
-            <h3>Récents</h3>
-        </div>
-        <div class="col-7 d-flex justify-content-start">
-            <?=$nom_conv?>
-        </div>
-        <div class="col-2 d-flex justify-content-end">
-            <img src="./Logo.svg" alt="Logo" class="img-fluid fs-6" style="height: 50px; color: white;">
-        </div>
-    </div>
-    <!-- Fin du header au dessus -->
-        <div class="container">
+    <div class="container">
+            <!-- Le header avec le titre de la section de gauche le nom de l'utilisateur et le logo à droite -->
+            <div class="row header p-3 d-flex align-items-center text-dark">
+                <div class="col-3 d-flex justify-content-center">
+                    <h3>Récents</h3>
+                </div>
+                <div class="col-7 d-flex justify-content-start">
+                    <?=$nom_conv?>
+                </div>
+                <div class="col-2 d-flex justify-content-end">
+                    <img src="./Logo.svg" alt="Logo" class="img-fluid fs-6" style="height: 50px; color: white;">
+                </div>
+            </div>
+            <!-- Fin du header au dessus -->
             <div class="row">
                 <div class="col-3 bg-secondary text-light border-top border-dark p-2 lef-menu d-flex flex-column h-100" id="contact-list">
                     <div class="row d-flex flex-column align-content-between">
@@ -95,11 +95,27 @@
                                 while ($ami= $requete->fetch()) {
                                 $ami_pseudo=$ami['pseudo'];
                                 $ami_id=$ami['id_ami'];
+                                $sql_conv= "SELECT * FROM conversations WHERE (utilisateur_1=$utilisateur OR utilisateur_2=$utilisateur) AND (utilisateur_1=$ami_id OR utilisateur_2=$ami_id)";
+                                $requete_conv=$connexion->prepare($sql_conv);
+                                $requete_conv->execute();
+                                $conv_result=$requete_conv->fetch();
+                                if(!$conv_result) {
+                                    $id_conv="";
+                                    $last_message="Pas encore de message";
+                                }
+                                else {
+                                    $id_conv=$conv_result['id_conversation'];
+                                    $sql_last_message= "SELECT contenu FROM messages WHERE id_conversation=$id_conv ORDER BY time_stamp DESC LIMIT 1";
+                                    $requete_last_message=$connexion->prepare($sql_last_message);
+                                    $requete_last_message->execute();
+                                    $last_message_result=$requete_last_message->fetch();
+                                    $last_message=$last_message_result['contenu'];
+                                };
                                 ?>
                                 <!-- Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté-->
                                 <div class="d-grid">
                                     <a class="btn btn-outline-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
-                                        <p class="text-end p-0">Dernier message de la conversation</p>
+                                        <p class="text-end p-0"><?=$last_message?></p>
                                     </a>
                                 </div>
                                 <HR>
