@@ -43,11 +43,11 @@ if(isset($_POST["connexionBtn"]))
                     <?=$_SESSION['erreurConnexion']?>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" required="required" placeholder="" id="inputEmail4">
+                        <input type="email" class="form-control" name="email" required="required" placeholder="Adresse e-mail" id="inputEmail4">
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputPassword4" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" name="mdp" required="required" placeholder="" id="inputPassword4">
+                        <input type="password" class="form-control" name="mdp" required="required" placeholder="Mot de passe" id="inputPassword4">
                     </div>
                     <a href="./inscription.php">Pas encore de compte ?</a>
                 </div>

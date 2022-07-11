@@ -59,7 +59,12 @@
                                 while ($ami= $requete->fetch()) {
                                 $ami_pseudo=$ami['pseudo'];
                                 ?>
-                                <p class="ps-2"><?=$ami_pseudo?></p>
+                                <!-- Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté-->
+                                <div class="d-grid">
+                                    <button class="btn btn-outline-light m-0 text-start p-1"><?=$ami_pseudo?> 
+                                        <p class="text-end p-0">Dernier message de la conversation</p>
+                                    </button>
+                                </div>
                                 <HR>
                             <?php
                             };
