@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 11 juil. 2022 à 09:45
+-- Généré le : lun. 11 juil. 2022 à 11:39
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -68,6 +68,13 @@ CREATE TABLE `conversations` (
   `utilisateur_2` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Déchargement des données de la table `conversations`
+--
+
+INSERT INTO `conversations` (`id_conversation`, `utilisateur_1`, `utilisateur_2`) VALUES
+(1, 4, 8);
+
 -- --------------------------------------------------------
 
 --
@@ -89,11 +96,7 @@ CREATE TABLE `messages` (
 
 INSERT INTO `messages` (`id_message`, `destinataire`, `emetteur`, `contenu`, `time_stamp`, `id_conversation`) VALUES
 (1, 4, 8, 'Ceci est un message de util7 à util3', '2022-07-07 09:06:57.000000', 1),
-(2, 8, 4, 'Ceci est un message de util3 à util7.', '2022-07-07 09:11:26.000000', 1),
-(5, 7, 4, 'test', '2022-07-07 13:54:00.000000', 1),
-(6, 7, 4, 'ceci est un message de util3 à util7 envoyé depuis la page de chat', '2022-07-07 20:59:59.999999', 1),
-(7, 7, 4, 'test2', '2022-07-10 20:59:59.999999', 1),
-(14, 7, 4, 'test 3', '2022-07-11 07:18:27.041830', 1);
+(2, 8, 4, 'Ceci est un message de util3 à util7.', '2022-07-07 09:11:26.000000', 1);
 
 -- --------------------------------------------------------
 
@@ -172,7 +175,7 @@ ALTER TABLE `contact_lists`
 -- AUTO_INCREMENT pour la table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id_conversation` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_conversation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
