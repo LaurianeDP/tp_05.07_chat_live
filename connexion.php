@@ -19,7 +19,7 @@ if(isset($_POST["connexionBtn"]))
         $resultat = $requete->fetch();
         if(!$resultat)
         {
-            $_SESSION['erreurConnexion'] = 'Identifiants erronés';
+            $_SESSION['erreurConnexion'] = '<p class="text-danger fs-5">Identifiants erronés<p>';
             $_SESSION['utilisateur'] = "disconnected"; //set connexion de l'utilisateur fausse
         }
         else {
@@ -40,13 +40,14 @@ if(isset($_POST["connexionBtn"]))
 
             <form action="connexion.php" method="POST" class="row d-flex justify-content-center m-0 col-12">
                 <div class="col-8 col-lg-4 mx-2">
+                    <?=$_SESSION['erreurConnexion']?>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" required="required" placeholder="<?=$_SESSION['erreurConnexion']?>" id="inputEmail4">
+                        <input type="email" class="form-control" name="email" required="required" placeholder="" id="inputEmail4">
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputPassword4" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" name="mdp" required="required" placeholder="<?=$_SESSION['erreurConnexion']?>" id="inputPassword4">
+                        <input type="password" class="form-control" name="mdp" required="required" placeholder="" id="inputPassword4">
                     </div>
                     <a href="./inscription.php">Pas encore de compte ?</a>
                 </div>
