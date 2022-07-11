@@ -74,9 +74,9 @@
 
 <body>
 
-    <div class="container">
+        <div class="container">
             <!-- Le header avec le titre de la section de gauche le nom de l'utilisateur et le logo à droite -->
-            <div class="row header p-3 d-flex align-items-center text-dark">
+            <div class="row header p-3 d-flex align-items-center text-dark" style="background-color: #F2F2F2;">
                 <div class="col-3 d-flex justify-content-center">
                     <h3>Récents</h3>
                 </div>
@@ -87,9 +87,10 @@
                     <img src="./Logo.svg" alt="Logo" class="img-fluid fs-6" style="height: 50px; color: white;">
                 </div>
             </div>
+            <!-- Le header avec le titre de la section de gauche le nom de l'utilisateur et le logo à droite -->
             <!-- Fin du header au dessus -->
             <div class="row">
-                <div class="col-3 bg-secondary text-light border-top border-dark p-2 lef-menu d-flex flex-column h-100" id="contact-list">
+                <div class="col-3 text-light border-top p-2 lef-menu d-flex flex-column h-100" id="contact-list" style="background-color: #444444;">
                     <div class="row d-flex flex-column align-content-between">
                         <!-- Ici la liste d'amis -->
                         <div class="col-12 amis overflow-auto">
@@ -132,7 +133,7 @@
                                 ?>
                                 <!-- Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté-->
                                 <div class="d-grid">
-                                    <a class="btn btn-outline-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
+                                    <a class="btn border-2 text-light border-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
                                         <p class="text-end p-0"><?=$last_message?></p>
                                     </a>
                                 </div>
@@ -154,25 +155,25 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="accordion border-0" id="mini-menu">
-                            <div class="accordion-item bg-secondary border-0">
+                        <div class="accordion" id="mini-menu">
+                            <div class="accordion-item bg-secondary border-4">
                                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="row">
-                                            <div class="btn btn-light rounded-0 col-4 d-flex align-items-center justify-content-center">
+                                            <div class="btn btn-light rounded-0 rounded-start col-4 d-flex align-items-center justify-content-center">
                                                 <!-- Lien de déconnexion -->
-                                                <a href="./deconnexion.php"><i class="fa-solid fa-person-through-window text-dark fs-4"></i></a>
+                                                <a href="./deconnexion.php"><i class="fa-solid fa-person-through-window text-dark fs-4" style="position: relative; top: 3px;"></i></a>
                                             </div>
                                             <div class="btn rounded-0 col-4 btn-light d-flex align-items-center justify-content-center">
-                                                <i class="fa-solid text-dark fa-user-ninja fs-4"></i>
+                                                <i class="fa-solid text-dark fa-user-ninja fs-4" style="position: relative; top: 1px;"></i>
                                             </div>
                                             <!-- Ici le bouton pour ajouter un ami, déclenche un autre accordéon qui affiche le input de l'id de l'ami à ajouter-->
-                                            <div class=" btn rounded-0 col-4 btn-light d-flex align-items-center justify-content-center">
+                                            <div class=" btn rounded-0 rounded-end col-4 btn-light d-flex align-items-center justify-content-center">
                                                 <div class="accordion" id="input_ami">
                                                     <div class="accordion-item bg-secondary border-0">
                                                         <h2 class="accordion-header p-0 bg-light border-0" id="headingTwo">
                                                         <button class="bg-light p-0 border-0 rounded-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                            <i class="fa-solid text-dark fa-user-plus fs-4"></i>
+                                                            <i class="fa-solid text-dark fa-user-plus fs-4" style="position: relative; top: -2px;"></i>
                                                         </button>
                                                         </h2>
                                                     </div>
@@ -182,7 +183,7 @@
                                     </div>
                                 </div>
                                 <h2 class="accordion-header" id="headingOne">
-                                <button class="btn btn-sm ms-1 bg-light collapsed text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                <button class="btn btn-sm ms-1 bg-light collapsed text-dark m-2 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                     <i class="fa-solid fa-burger fs-4"></i>
                                 </button>
                                 </h2>
