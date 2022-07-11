@@ -24,15 +24,18 @@
             min-height: 50px;
         }
         .amis {
-            min-height: 50vh;
+            min-height: 55vh;
             max-width: 70vh;
+        }
+        #date {
+            font-size: 0.8rem;
+        }
+        .left-menu {
+            min-height: 80vh;
         }
         .messages {
-            max-width: 70vh;
+            max-height: 55vh;
         }
-        /* .left-menu {
-            max-width: 50vh;
-        } */
 
     </style>
     <script src="https://kit.fontawesome.com/34451dc3f2.js" crossorigin="anonymous"></script>

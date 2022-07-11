@@ -17,16 +17,15 @@
     $requete->execute();
     $result= $requete->fetch();
     $pseudo=$result['pseudo'];
-
+    
+    
     if(isset($_POST['SendMessage']) && !empty($_POST['messageToSend'])) {
-        $sql_message= "INSERT INTO `messages` (`destinataire`, `emetteur`, `contenu`, `heure`, `date`, `id_conversation`) VALUES (:ami, :utilisateur, :contenu, :heure, :date, :conv)";
+        $sql_message= "INSERT INTO `messages` (`destinataire`, `emetteur`, `contenu`, `id_conversation`) VALUES (:ami, :utilisateur, :contenu, :conv)";
         $requete_mess=$connexion->prepare($sql_message);
-        $requete->execute(array(
+        $requete_mess->execute(array(
             ':ami' => 7, 
             ':utilisateur' => $utilisateur,
             ':contenu' => $_POST['messageToSend'],
-            ':heure' => time(),
-            ':date' => date('Y-m-d'),
             ':conv' => 1
         ));
     }
@@ -49,7 +48,7 @@
             </div>
             <!-- Fin du header au dessus -->
             <div class="row">
-                <div class="col-3 bg-secondary text-light border-top border-dark p-2 lef-menu d-flex flex-column" id="contact-list">
+                <div class="col-3 bg-secondary text-light border-top border-dark p-2 lef-menu d-flex flex-column h-100" id="contact-list">
                     <div class="row d-flex flex-column align-content-between">
                         <!-- Ici la liste d'amis -->
                         <div class="col-12 amis overflow-auto">
@@ -116,24 +115,24 @@
                 <!-- La section principale avec les messages -->
                 <div class="col-9 d-flex m-0 p-0" id="main">
                     <div class="row p-0 m-0 w-100">
-                        <div class="col-12 px-1 d-flex flex-column overflow-auto messages w-100">
+                        <div class="col-10 px-1 d-flex offset-1 flex-column overflow-auto messages">
                             <!-- Ici de l'ajax pour afficher les messages au fur et à mesure qu'ils sont envoyés -->
                             <?php
                                 //Requête pour récupérer tous les messages d'une conversation
-                                $sql_conv= "SELECT * FROM `messages` WHERE destinataire=$utilisateur OR emetteur=$utilisateur ORDER BY date, heure DESC";
+                                $sql_conv= "SELECT * FROM `messages` WHERE destinataire=$utilisateur OR emetteur=$utilisateur ORDER BY time_stamp";
                                 $requete_conv=$connexion->prepare($sql_conv);
                                 $requete_conv->execute();
                                 while ($conv= $requete_conv->fetch()) {
                                     $emetteur=$conv['emetteur'];
                                     $destinataire=$conv['destinataire'];
                                     $contenu=$conv['contenu'];
-                                    $datetime=$conv['heure']." ".$conv['date'];
+                                    $datetime=$conv['time_stamp'];
                                     $class=($emetteur==$utilisateur) ? "align-self-end text-end" : "align-self-start";
-                                    $color=($emetteur==$utilisateur) ? "bg-success" : "bg-light";
+                                    $contentClass=($emetteur==$utilisateur) ? "bg-success pe-4" : "bg-light ps-3";
                                 ?>
                                     <div class="<?=$class?> mx-2 my-1 d-flex flex-column justify-content-center">
-                                        <p class="<?=$color?> p-4 border border-secondary rounded-pill mb-0"><?=$contenu?></p>
-                                        <p class="px-4 fst-italic"><?=$datetime?></p>
+                                        <p class="<?=$contentClass?> p-2 border border-secondary rounded-pill mb-0 text-wrap"><?=$contenu?></p>
+                                        <p class="px-2 fst-italic" id="date"><?=$datetime?></p>
                                     </div>
                                 <?php
                                 };

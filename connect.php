@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-DEFINE("BDD", "dw_chat");
+DEFINE("BDD", "chatLT");
 DEFINE("USER", "root");
 DEFINE("HOST", "localhost");
 DEFINE("PASSW", "");
