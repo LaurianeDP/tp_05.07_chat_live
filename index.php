@@ -54,22 +54,27 @@
         ));
         header('location: '.$_SERVER['REQUEST_URI']);
     }
-
     //Code pour l'ajout d'un contact, sélectionne l'id à ajouter dans la liste à partir d'une recherche de pseudo
-    if(isset($_POST['add_friend'])&& !empty($_POST['add_friend'])) {
+    if(isset($_POST['add_friend'])&& !empty($_POST['pseudo_ami'])) {
+        echo "ici post du nouvel ami";
         $pseudo_ami= $_POST['pseudo_ami'];
-        $sql_pseudo_ami= "SELECT id_user FROM utilisateurs WHERE pseudo=$pseudo_ami";
+        $sql_pseudo_ami= "SELECT id_user FROM utilisateurs WHERE pseudo=?";
+        echo $sql_pseudo_ami;
         $requete_pseudo_ami=$connexion->prepare($sql_pseudo_ami);
-        $requete_pseudo_ami->execute();
+        $requete_pseudo_ami->execute(array($pseudo_ami));
         $result_pseudo_ami=$requete_pseudo_ami->fetch();
         if(!$result_pseudo_ami) {
-            echo "Pseudo incorrect";
+            $erreur="Pseudo incorrect";
         }
         else {
+            var_dump($_POST);
             $id_to_add=$result_pseudo_ami['id_user'];
-            $sql_ajout_ami= "INSERT INTO contact_lists "
+            $sql_ajout_ami= "INSERT INTO contact_lists (id_user1, id_user2) VALUES ($utilisateur, $id_to_add)";
+            $requete_ajout_ami=$connexion->prepare($sql_ajout_ami);
+            $requete_ajout_ami->execute();
         }
-    }
+    };
+    $erreur="";
 ?>
 
 <body>
@@ -241,6 +246,7 @@
                                 <input type="hidden" name="conv_id" value="<?=$id_conv?>">
                                 <button type="submit" name="SendMessage" class="btn fs-4"><i class="fa-solid fa-paper-plane"></i></button>
                             </form>
+                            <div><?=$erreur?></div>
                         </div>
                     </div>
                 </div>
