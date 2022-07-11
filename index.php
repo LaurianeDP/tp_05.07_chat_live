@@ -9,7 +9,7 @@
     $utilisateur=$_SESSION['util_connect'];
 
     //SQL sélection liste d'amis
-    $sql="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=$utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_$utilisateur', utilisateurs.pseudo, utilisateurs.id_user FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=$utilisateur OR contact_lists.id_user2=$utilisateur HAVING utilisateurs.id_user=amis_$utilisateur ORDER BY utilisateurs.pseudo;";
+    $sql_ami="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=$utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_$utilisateur', utilisateurs.pseudo, utilisateurs.id_user AS 'id_ami' FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=$utilisateur OR contact_lists.id_user2=$utilisateur HAVING utilisateurs.id_user=amis_$utilisateur ORDER BY utilisateurs.pseudo;";
 
     // Requête pour récupérer le pseudo de l'utilisateur connecté
     $sql_pseudo= "SELECT pseudo FROM utilisateurs WHERE id_user=$utilisateur";
@@ -20,13 +20,15 @@
     
     
     if(isset($_POST['SendMessage']) && !empty($_POST['messageToSend'])) {
+        $ami_id=$_GET['ami'];
+        $id_conv=$_GET['conv'];
         $sql_message= "INSERT INTO `messages` (`destinataire`, `emetteur`, `contenu`, `id_conversation`) VALUES (:ami, :utilisateur, :contenu, :conv)";
         $requete_mess=$connexion->prepare($sql_message);
         $requete_mess->execute(array(
-            ':ami' => 7, 
+            ':ami' => $ami_id,
             ':utilisateur' => $utilisateur,
             ':contenu' => $_POST['messageToSend'],
-            ':conv' => 1
+            ':conv' => $id_conv
         ));
     }
 ?>
@@ -35,7 +37,7 @@
 
         <div class="container">
             <!-- Le header avec le titre de la section de gauche le nom de l'utilisateur et le logo à droite -->
-            <div class="row bg-secondary p-3 d-flex align-items-center text-light">
+            <div class="row header p-3 d-flex align-items-center text-dark">
                 <div class="col-3 d-flex justify-content-center">
                     <h3>Récents</h3>
                 </div>
@@ -54,20 +56,35 @@
                         <div class="col-12 amis overflow-auto">
                             <!-- Du PHP pour afficher la liste d'amis et ajouter les conversation liées si nécessaire -->
                             <?php
-                                $requete=$connexion->prepare($sql);
+                                if(isset($_GET['ami'])) {
+                                    $ami_id=$_GET['ami'];
+                                    $sql_conv= "SELECT * FROM conversations WHERE (utilisateur_1=$utilisateur OR utilisateur_2=$utilisateur) AND (utilisateur_1=$ami_id OR utilisateur_2=$ami_id)";
+                                    $requete_conv=$connexion->prepare($sql_conv);
+                                    $requete_conv->execute();
+                                    $conv_result=$requete_conv->fetch();
+                                    if(!$conv_result) {
+                                        $id_conv="";
+                                    }
+                                    else {
+                                        $id_conv=$conv_result['id_conversation'];
+                                    }
+                                }
+                                $requete=$connexion->prepare($sql_ami);
                                 $requete->execute();
                                 while ($ami= $requete->fetch()) {
                                 $ami_pseudo=$ami['pseudo'];
+                                $ami_id=$ami['id_ami'];
                                 ?>
                                 <!-- Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté-->
                                 <div class="d-grid">
-                                    <button class="btn btn-outline-light m-0 text-start p-1"><?=$ami_pseudo?> 
+                                    <a class="btn btn-outline-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
                                         <p class="text-end p-0">Dernier message de la conversation</p>
-                                    </button>
+                                    </a>
                                 </div>
                                 <HR>
                             <?php
                             };
+
                             ?>
                         </div>
                     </div>
@@ -120,27 +137,41 @@
                 <!-- La section principale avec les messages -->
                 <div class="col-9 d-flex m-0 p-0" id="main">
                     <div class="row p-0 m-0 w-100">
-                        <div class="col-10 px-1 d-flex offset-1 flex-column overflow-auto messages">
+                        <div class="col-10 px-1 pt-3 d-flex offset-1 flex-column overflow-auto messages">
                             <!-- Ici de l'ajax pour afficher les messages au fur et à mesure qu'ils sont envoyés -->
                             <?php
                                 //Requête pour récupérer tous les messages d'une conversation
-                                $sql_conv= "SELECT * FROM `messages` WHERE destinataire=$utilisateur OR emetteur=$utilisateur ORDER BY time_stamp";
-                                $requete_conv=$connexion->prepare($sql_conv);
-                                $requete_conv->execute();
-                                while ($conv= $requete_conv->fetch()) {
-                                    $emetteur=$conv['emetteur'];
-                                    $destinataire=$conv['destinataire'];
-                                    $contenu=$conv['contenu'];
-                                    $datetime=$conv['time_stamp'];
-                                    $class=($emetteur==$utilisateur) ? "align-self-end text-end" : "align-self-start";
-                                    $contentClass=($emetteur==$utilisateur) ? "bg-success pe-4" : "bg-light ps-3";
-                                ?>
-                                    <div class="<?=$class?> mx-2 my-1 d-flex flex-column justify-content-center">
-                                        <p class="<?=$contentClass?> p-2 border border-secondary rounded-pill mb-0 text-wrap"><?=$contenu?></p>
-                                        <p class="px-2 fst-italic" id="date"><?=$datetime?></p>
-                                    </div>
-                                <?php
-                                };
+                                if(isset($_GET['ami'])) {
+                                    if(empty($id_conv)) {
+                                        ?>
+                                        <div class="text-center mt-5 pt-5">Vous n'avez pas encore démarré de conversation avec cet utilisateur</div>
+                                        <?php
+                                    }
+                                    else {
+                                        $sql_conv= "SELECT * FROM `messages` WHERE id_conversation=$id_conv ORDER BY time_stamp";
+                                        $requete_conv=$connexion->prepare($sql_conv);
+                                        $requete_conv->execute();
+                                            while ($conv=$requete_conv->fetch()) {
+                                                $emetteur=$conv['emetteur'];
+                                                $destinataire=$conv['destinataire'];
+                                                $contenu=$conv['contenu'];
+                                                $datetime=$conv['time_stamp'];
+                                                $class=($emetteur==$utilisateur) ? "align-self-end text-end" : "align-self-start";
+                                                $contentClass=($emetteur==$utilisateur) ? "bg-success pe-4" : "bg-light ps-3";
+                                            ?>
+                                                <div class="<?=$class?> mx-2 my-1 d-flex flex-column justify-content-center">
+                                                    <p class="<?=$contentClass?> p-2 border border-secondary rounded-pill mb-0 text-wrap"><?=$contenu?></p>
+                                                    <p class="px-2 fst-italic" id="date"><?=$datetime?></p>
+                                                </div>
+                                                <?php
+                                                }
+                                    }
+                                        }
+                                else {
+                                    ?>
+                                    <div class="text-center mt-5 pt-5">Sélectionnez ou démarrez une conversation pour voir les messages</div>
+                                    <?php
+                                }
                             ?>
                         </div>
                         <div class="col-10 offset-1 align-self-end">

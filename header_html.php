@@ -36,6 +36,9 @@
         .messages {
             max-height: 55vh;
         }
+        .header {
+            background-color: lightgray;
+        }
 
     </style>
     <script src="https://kit.fontawesome.com/34451dc3f2.js" crossorigin="anonymous"></script>
