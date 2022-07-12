@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 12 juil. 2022 à 09:27
+-- Généré le : mar. 12 juil. 2022 à 16:26
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -55,7 +55,9 @@ INSERT INTO `contact_lists` (`id_contact_list`, `id_user1`, `id_user2`) VALUES
 (13, 10, 2),
 (14, 10, 5),
 (15, 11, 3),
-(16, 4, 9);
+(16, 4, 9),
+(17, 4, 10),
+(22, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -76,7 +78,10 @@ CREATE TABLE `conversations` (
 INSERT INTO `conversations` (`id_conversation`, `utilisateur_1`, `utilisateur_2`) VALUES
 (1, 4, 8),
 (5, 4, 5),
-(6, 4, 9);
+(6, 4, 9),
+(7, 4, 10),
+(8, 4, 6),
+(9, 4, 3);
 
 -- --------------------------------------------------------
 
@@ -102,14 +107,16 @@ INSERT INTO `messages` (`id_message`, `destinataire`, `emetteur`, `contenu`, `ti
 (2, 8, 4, 'Ceci est un message de util3 à util7.', '2022-07-07 09:11:26.000000', 1),
 (15, 8, 4, 'ceci est un message de util3 à util7 envoyé depuis la page de chat', '2022-07-11 09:53:28.568804', 1),
 (16, 8, 4, 'test 3', '2022-07-11 09:54:26.633155', 1),
-(18, 8, 4, 'test 4', '2022-07-11 10:09:46.661086', 1),
-(19, 4, 8, 'réponse 1', '2022-07-11 10:10:53.826244', 1),
-(20, 8, 4, 'réponse de réponse 1', '2022-07-11 10:11:12.381217', 1),
-(21, 8, 4, 'test', '2022-07-11 10:14:09.384212', 1),
-(22, 5, 4, 'Premier message', '2022-07-11 10:21:54.198683', 1),
 (25, 5, 4, 'Premier message à util4', '2022-07-11 12:28:20.950913', 5),
-(26, 8, 4, 'dernier message à util7', '2022-07-11 12:40:13.022458', 1),
-(27, 9, 4, 'premier message à util8', '2022-07-11 14:08:28.814407', 6);
+(27, 9, 4, 'premier message à util8', '2022-07-11 14:08:28.814407', 6),
+(28, 10, 4, 'test', '2022-07-12 09:45:32.541691', 7),
+(33, 3, 4, 'test', '2022-07-12 10:16:59.619668', 9),
+(35, 10, 4, 'message 2', '2022-07-12 11:39:49.931835', 7),
+(36, 8, 4, 'encore un message à util7', '2022-07-12 12:38:59.788358', 1),
+(37, 6, 4, 'test', '2022-07-12 12:40:25.965073', 8),
+(46, 6, 4, 'message test', '2022-07-12 13:38:06.473947', 8),
+(48, 8, 4, 'et un autre', '2022-07-12 13:55:41.072035', 1),
+(49, 8, 4, 'et encore un autre', '2022-07-12 13:56:14.746592', 1);
 
 -- --------------------------------------------------------
 
@@ -170,7 +177,8 @@ ALTER TABLE `messages`
   ADD PRIMARY KEY (`id_message`),
   ADD KEY `messages_ibfk_1` (`id_conversation`),
   ADD KEY `destinataire` (`destinataire`),
-  ADD KEY `emetteur` (`emetteur`);
+  ADD KEY `emetteur` (`emetteur`),
+  ADD KEY `time_stamp` (`time_stamp`);
 
 --
 -- Index pour la table `utilisateurs`
@@ -189,19 +197,19 @@ ALTER TABLE `utilisateurs`
 -- AUTO_INCREMENT pour la table `contact_lists`
 --
 ALTER TABLE `contact_lists`
-  MODIFY `id_contact_list` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_contact_list` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT pour la table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id_conversation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_conversation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateurs`

@@ -2,7 +2,6 @@
     require_once "./connect.php";
     $utilisateur=$_SESSION['util_connect'];
 
-    var_dump($_POST);
     //Code pour l'envoi d'un message
     if(!empty($_POST['messageToSend'])) {
         $ami_id=$_POST['ami_id'];
@@ -24,6 +23,6 @@
             ':contenu' => $_POST['messageToSend']
         ));
     }
-    $statut= new array("resultat": "true", "conv_id" : $id_conv);
+    $statut=array("resultat" => "true", "conv_id" => $id_conv);
     echo json_encode($statut);
     ?>

@@ -34,7 +34,7 @@
             min-height: 80vh;
         }
         .messages {
-            max-height: 55vh;
+            max-height: 75vh;
         }
         .header {
             background-color: lightgray;
