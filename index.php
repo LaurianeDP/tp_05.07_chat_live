@@ -14,9 +14,11 @@
 
 
     // Requête pour récupérer le pseudo de l'utilisateur connecté
-    $sql_pseudo= "SELECT pseudo FROM utilisateurs WHERE id_user=$utilisateur";
+    $sql_pseudo= "SELECT pseudo FROM utilisateurs WHERE id_user=:utilisateur";
     $requete=$connexion->prepare($sql_pseudo);
-    $requete->execute();
+    $requete->execute(array(
+        ':utilisateur' => $utilisateur
+    ));
     $result= $requete->fetch();
     $pseudo=$result['pseudo'];
     
