@@ -1,10 +1,10 @@
 <?php
     require_once "./connect.php";
     $utilisateur=$_SESSION['util_connect'];
-    
+
     //Requête pour récupérer tous les messages d'une conversation
     
-    if(isset($_GET['ami'])) {
+    if(isset($_GET['ami'])&& !empty($_GET['ami'])) {
         $ami_id= $_GET['ami'];
         $id_conv=$_GET['conv'];
 

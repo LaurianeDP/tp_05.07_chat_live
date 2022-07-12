@@ -36,28 +36,6 @@
         $nom_conv="";
     }
 
-    //Code pour l'envoit d'un message
-    if(isset($_POST['SendMessage']) && !empty($_POST['messageToSend'])) {
-        $ami_id=$_POST['ami_id'];
-        $id_conv=$_POST['conv_id'];
-        if(empty($_POST['conv_id'])) {
-            $sql_new_conv= "INSERT INTO conversations (utilisateur_1, utilisateur_2) VALUES ($utilisateur, $ami_id)";
-            $requete=$connexion->prepare($sql_new_conv);
-            $requete->execute();
-
-            $sql_last_conv_select= "SELECT MAX(id_conversation) AS 'last_id' FROM conversations";
-            $requete=$connexion->prepare($sql_last_conv_select);
-            $requete->execute();
-            $result_conv=$requete->fetch();
-            $id_conv=$result_conv['last_id'];
-        };
-        $sql_message= "INSERT INTO `messages` (`destinataire`, `emetteur`, `contenu`, `id_conversation`) VALUES ($ami_id, $utilisateur, :contenu, $id_conv)";
-        $requete_mess=$connexion->prepare($sql_message);
-        $requete_mess->execute(array(
-            ':contenu' => $_POST['messageToSend']
-        ));
-        header('location: '.$_SERVER['REQUEST_URI']);
-    }
     //Code pour l'ajout d'un contact, sélectionne l'id à ajouter dans la liste à partir d'une recherche de pseudo
     if(isset($_POST['add_friend'])&& !empty($_POST['pseudo_ami'])) {
         $pseudo_ami= $_POST['pseudo_ami'];
@@ -204,17 +182,20 @@
                             
                         </div>
                         <div class="col-10 offset-1 align-self-end">
-                            <form action="index.php" method="POST" class="d-flex">
+                            <div class="d-flex">
                                 <?php
                                     if(isset($_GET['ami'])) {
                                         $ami_id=$_GET['ami'];
                                     }
+                                    else {
+                                        $ami_id="";
+                                    }
                                 ?>
-                                <input type="text" class="form-control" name="messageToSend" id="inputMessage" placeholder="Entrez votre message ici">
+                                <input type="text" class="form-control" name="messageToSend" id="messageToSend" placeholder="Entrez votre message ici">
                                 <input type="hidden" name="ami_id" id="ami_id" value="<?=$ami_id?>">
                                 <input type="hidden" name="conv_id" id="conv_id" value="<?=$id_conv?>">
-                                <button type="submit" name="SendMessage" class="btn fs-4"><i class="fa-solid fa-paper-plane"></i></button>
-                            </form>
+                                <button name="SendMessage" id="sendMessage" class="btn fs-4"><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -222,9 +203,28 @@
             <div><?=$erreur?></div>
         </div>
         <script>
+            let messageBtn= document.querySelector('#sendMessage').addEventListener('click', () => {
+
+                const formData = new FormData();
+                
+                formData.append('messageToSend', document.querySelector('#messageToSend').value);
+                formData.append('conv_id', document.querySelector('#conv_id').value);
+                formData.append('ami_id', document.querySelector('#ami_id').value);
+
+                const options = {
+                    method: 'POST',
+                    body: formData
+                }
+
+                fetch('ajoutMessage.php', options)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+            })
+
             setInterval(() => {
                 // document.querySelector('.messages').innerHTML= new Date().toLocaleTimeString(); //Test
-                console.log(`getMessages.php?ami=document.querySelector('#ami_id').value`);
                 let ami_id=document.querySelector('#ami_id').value;
                 let conv_id=document.querySelector('#conv_id').value;
                 fetch(`getMessages.php?ami=${ami_id}&conv=${conv_id}`)
