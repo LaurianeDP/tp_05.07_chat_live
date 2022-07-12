@@ -12,8 +12,6 @@
     }
     $utilisateur=$_SESSION['util_connect'];
 
-    //SQL sélection liste d'amis
-    $sql_ami="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=$utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_$utilisateur', utilisateurs.pseudo, utilisateurs.id_user AS 'id_ami' FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=$utilisateur OR contact_lists.id_user2=$utilisateur HAVING utilisateurs.id_user=amis_$utilisateur ORDER BY utilisateurs.pseudo;";
 
     // Requête pour récupérer le pseudo de l'utilisateur connecté
     $sql_pseudo= "SELECT pseudo FROM utilisateurs WHERE id_user=$utilisateur";
@@ -77,54 +75,7 @@
                     <div class="row d-flex flex-column align-content-between">
                         <!-- Ici la liste d'amis -->
                         <div class="col-12 amis overflow-auto">
-                            <!-- Du PHP pour afficher la liste d'amis et ajouter les conversation liées si nécessaire -->
-                            <?php
-                                if(isset($_GET['ami'])) {
-                                    $ami_id=$_GET['ami'];
-                                    $sql_conv= "SELECT * FROM conversations WHERE (utilisateur_1=$utilisateur OR utilisateur_2=$utilisateur) AND (utilisateur_1=$ami_id OR utilisateur_2=$ami_id)";
-                                    $requete_conv=$connexion->prepare($sql_conv);
-                                    $requete_conv->execute();
-                                    $conv_result=$requete_conv->fetch();
-                                    if(!$conv_result) {
-                                        $id_conv="";
-                                    }
-                                    else {
-                                        $id_conv=$conv_result['id_conversation'];
-                                    }
-                                }
-                                $requete=$connexion->prepare($sql_ami);
-                                $requete->execute();
-                                while ($ami= $requete->fetch()) {
-                                    $ami_pseudo=$ami['pseudo'];
-                                    $ami_id=$ami['id_ami'];
-                                    $sql_conv2= "SELECT * FROM conversations WHERE (utilisateur_1=$utilisateur OR utilisateur_2=$utilisateur) AND (utilisateur_1=$ami_id OR utilisateur_2=$ami_id)";
-                                    $requete_conv2=$connexion->prepare($sql_conv2);
-                                    $requete_conv2->execute();
-                                    $conv_result2=$requete_conv2->fetch();
-                                    if(!$conv_result2) {
-                                        $id_conv2="";
-                                        $last_message="Pas encore de message";
-                                    }
-                                    else {
-                                        $id_conv2=$conv_result2['id_conversation'];
-                                        $sql_last_message= "SELECT contenu FROM messages WHERE id_conversation=$id_conv2 ORDER BY time_stamp DESC LIMIT 1";
-                                        $requete_last_message=$connexion->prepare($sql_last_message);
-                                        $requete_last_message->execute();
-                                        $last_message_result=$requete_last_message->fetch();
-                                        $last_message=$last_message_result['contenu'];
-                                    };
-                                ?>
-                                <!-- Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté-->
-                                <div class="d-grid">
-                                    <a class="btn border-2 btn-outline-dark text-light border-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
-                                        <p class="text-end p-0"><?=$last_message?></p>
-                                    </a>
-                                </div>
-                                <HR>
-                            <?php
-                            };
-
-                            ?>
+                            <!-- Ajax pour afficher la liste d'amis -->
                         </div>
                     </div>
                     <!-- Ici le mini menu de deconnexion et d'accès à la page profil -->
@@ -203,8 +154,17 @@
             <div><?=$erreur?></div>
         </div>
         <script>
-            let messageBtn= document.querySelector('#sendMessage').addEventListener('click', () => {
+            refreshContacts();
+            //Ajout du message en dynamique
+            document.querySelector('#sendMessage').addEventListener('click', addMessage);
+            document.addEventListener('keypress', (e) => {
+                if(e.key === 'Enter' && document.querySelector('#messageToSend').value != "") {
+                    addMessage();
+                    document.querySelector('#messageToSend').value = "";
+                }
+            });
 
+            function addMessage() {
                 const formData = new FormData();
                 
                 formData.append('messageToSend', document.querySelector('#messageToSend').value);
@@ -221,8 +181,21 @@
                 .then(data => {
                     document.querySelector('#conv_id').value=data.conv_id;
                 });
-            })
+                refreshConv();
+                refreshContacts();
+            } //Fin fonction addMessage
+            
+            // Interval pour la MaJ de l'id conv
+            setInterval(() => {
+                refreshConv();
+            }, 200);
 
+            //Interval pour l'affichage de la liste de contact
+            setInterval(() => {
+                refreshContacts();
+            }, 5000);
+
+            //Interval pour l'affichage des messages
             setInterval(() => {
                 let ami_id=document.querySelector('#ami_id').value;
                 let conv_id=document.querySelector('#conv_id').value;
@@ -230,8 +203,31 @@
                     .then(response => response.text())
                     .then(html => {
                         document.querySelector('.messages').innerHTML = html;
+                    });
+                }, 1000);
+                
+                console.log(document.querySelector('.messages').hasChildNodes());
+
+            //Fonction de rafraîchissement de l'affichage de la liste de contact, en dehors de interval pour être intégrée à l'event de l'ajout de message
+            function refreshContacts() {
+                let ami_id=document.querySelector('#ami_id').value;
+                let conv_id=document.querySelector('#conv_id').value;
+                fetch(`getContacts.php?ami=${ami_id}&conv=${conv_id}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.querySelector('.amis').innerHTML = html;
                     })
-            }, 1000);
+            }
+
+            //Fonction de rafraîchissement de l'id de conversation, en dehors de interval pour être intégrée à l'event de l'ajout de message
+            function refreshConv() {
+                let ami_id=document.querySelector('#ami_id').value;
+                fetch(`getConv.php?ami=${ami_id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.querySelector('#conv_id').value=data.conv_id;
+                    })
+            }
         </script>
 </body>
 </html>
