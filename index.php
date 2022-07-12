@@ -2,6 +2,8 @@
     include_once "connect.php";
     include_once "header_html.php";
 
+    $erreur="";
+
     if(!isset($_SESSION["utilisateur"])) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
     {
         header('Location: ./connexion.php');
@@ -56,15 +58,13 @@
     }
     //Code pour l'ajout d'un contact, sélectionne l'id à ajouter dans la liste à partir d'une recherche de pseudo
     if(isset($_POST['add_friend'])&& !empty($_POST['pseudo_ami'])) {
-        echo "ici post du nouvel ami";
         $pseudo_ami= $_POST['pseudo_ami'];
         $sql_pseudo_ami= "SELECT id_user FROM utilisateurs WHERE pseudo=?";
-        echo $sql_pseudo_ami;
         $requete_pseudo_ami=$connexion->prepare($sql_pseudo_ami);
         $requete_pseudo_ami->execute(array($pseudo_ami));
         $result_pseudo_ami=$requete_pseudo_ami->fetch();
         if(!$result_pseudo_ami) {
-            $erreur="Pseudo incorrect";
+            $erreur="/!\ Pseudo incorrect /!\ ";
         }
         else {
             var_dump($_POST);
@@ -74,7 +74,6 @@
             $requete_ajout_ami->execute();
         }
     };
-    $erreur="";
 ?>
 
 <body>
@@ -138,7 +137,7 @@
                                 ?>
                                 <!-- Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté-->
                                 <div class="d-grid">
-                                    <a class="btn border-2 text-light border-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
+                                    <a class="btn border-2 btn-outline-dark text-light border-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
                                         <p class="text-end p-0"><?=$last_message?></p>
                                     </a>
                                 </div>
@@ -246,11 +245,11 @@
                                 <input type="hidden" name="conv_id" value="<?=$id_conv?>">
                                 <button type="submit" name="SendMessage" class="btn fs-4"><i class="fa-solid fa-paper-plane"></i></button>
                             </form>
-                            <div><?=$erreur?></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div><?=$erreur?></div>
         </div>
 </body>
 </html>
