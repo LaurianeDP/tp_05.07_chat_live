@@ -26,10 +26,18 @@
                     <h3 class="col-12 mx-auto my-5">Votre mot de passe</h3>
                 </div>
                 <div class="col-1">
-                    <h3 class="col-12 mx-auto my-5">Test</h3>
-                    <h3 class="col-12 mx-auto my-5">Test</h3>
-                    <h3 class="col-12 mx-auto my-5">Test</h3>
-                    <h3 class="col-12 mx-auto my-5">Test</h3>
+                    <h3 class="col-12 mx-auto my-5">
+                        <button type="submit" name="SendMessage" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
+                    </h3>
+                    <h3 class="col-12 mx-auto my-5">
+                        <button type="submit" name="SendMessage" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
+                    </h3>
+                    <h3 class="col-12 mx-auto my-5">
+                        <button type="submit" name="SendMessage" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
+                    </h3>
+                    <h3 class="col-12 mx-auto my-5">
+                        <button type="submit" name="SendMessage" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
+                    </h3>
                 </div>
             </div>
         </div>
