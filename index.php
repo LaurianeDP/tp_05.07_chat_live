@@ -212,7 +212,7 @@
                                 ?>
                                 <input type="text" class="form-control" name="messageToSend" id="inputMessage" placeholder="Entrez votre message ici">
                                 <input type="hidden" name="ami_id" id="ami_id" value="<?=$ami_id?>">
-                                <input type="hidden" name="conv_id" value="<?=$id_conv?>">
+                                <input type="hidden" name="conv_id" id="conv_id" value="<?=$id_conv?>">
                                 <button type="submit" name="SendMessage" class="btn fs-4"><i class="fa-solid fa-paper-plane"></i></button>
                             </form>
                         </div>
@@ -226,7 +226,8 @@
                 // document.querySelector('.messages').innerHTML= new Date().toLocaleTimeString(); //Test
                 console.log(`getMessages.php?ami=document.querySelector('#ami_id').value`);
                 let ami_id=document.querySelector('#ami_id').value;
-                fetch(`getMessages.php?ami=ami_id`);
+                let conv_id=document.querySelector('#conv_id').value;
+                fetch(`getMessages.php?ami=${ami_id}&conv=${conv_id}`)
                     .then(response => response.text())
                     .then(html => {
                         document.querySelector('.messages').innerHTML = html;
