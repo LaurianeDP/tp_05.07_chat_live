@@ -170,7 +170,7 @@
                                                 <a href="./deconnexion.php"><i class="fa-solid fa-person-through-window text-dark fs-4" style="position: relative; top: 3px;"></i></a>
                                             </div>
                                             <div class="btn rounded-0 col-4 btn-light d-flex align-items-center justify-content-center">
-                                                <i class="fa-solid text-dark fa-user-ninja fs-4" style="position: relative; top: 1px;"></i>
+                                                <a href="./profil.php"><i class="fa-solid text-dark fa-user-ninja fs-4" style="position: relative; top: 1px;"></i></a>
                                             </div>
                                             <!-- Ici le bouton pour ajouter un ami, déclenche un autre accordéon qui affiche le input de l'id de l'ami à ajouter-->
                                             <div class=" btn rounded-0 rounded-end col-4 btn-light d-flex align-items-center justify-content-center">

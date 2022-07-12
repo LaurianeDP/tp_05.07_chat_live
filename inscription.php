@@ -17,7 +17,7 @@
     include_once "header_html.php"
 ?>
 
-<body class="m-4 p-4 hauteur ">
+<body class="m-4 p-4 hauteur">
     <div class="col-2 d-flex justify-content-end d-inline" style="position: absolute;">
         <img src="./Logo.svg" alt="Logo" class="img-fluid fs-6" style="height: 50px; color: white;">
     </div>
