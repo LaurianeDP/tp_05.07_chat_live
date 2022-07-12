@@ -2,6 +2,8 @@
     include_once "connect.php";
     include_once "header_html.php";
 
+    $ami_id="";
+    $id_conv="";
     $erreur="";
 
     if(!isset($_SESSION["utilisateur"])) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
@@ -67,7 +69,6 @@
             $erreur="/!\ Pseudo incorrect /!\ ";
         }
         else {
-            var_dump($_POST);
             $id_to_add=$result_pseudo_ami['id_user'];
             $sql_ajout_ami= "INSERT INTO contact_lists (id_user1, id_user2) VALUES ($utilisateur, $id_to_add)";
             $requete_ajout_ami=$connexion->prepare($sql_ajout_ami);
@@ -200,48 +201,17 @@
                     <div class="row p-0 m-0 w-100">
                         <div class="col-10 px-1 pt-3 d-flex offset-1 flex-column overflow-auto messages">
                             <!-- Ici de l'ajax pour afficher les messages au fur et à mesure qu'ils sont envoyés -->
-                            <?php
-                                //Requête pour récupérer tous les messages d'une conversation
-                                if(isset($_GET['ami'])) {
-                                    $ami_id=$_GET['ami'];
-                                    if(empty($id_conv)) {
-                                        ?>
-                                        <div class="text-center mt-5 pt-5">Vous n'avez pas encore démarré de conversation avec cet utilisateur</div>
-                                        <?php
-                                    }
-                                    else {
-                                        $sql_conv= "SELECT * FROM `messages` WHERE id_conversation=$id_conv ORDER BY time_stamp";
-                                        $requete_conv=$connexion->prepare($sql_conv);
-                                        $requete_conv->execute();
-                                            while ($conv=$requete_conv->fetch()) {
-                                                $emetteur=$conv['emetteur'];
-                                                $destinataire=$conv['destinataire'];
-                                                $contenu=$conv['contenu'];
-                                                $datetime=$conv['time_stamp'];
-                                                $class=($emetteur==$utilisateur) ? "align-self-end text-end" : "align-self-start";
-                                                $contentClass=($emetteur==$utilisateur) ? "bg-success pe-4" : "bg-light ps-3";
-                                            ?>
-                                                <div class="<?=$class?> mx-2 my-1 d-flex flex-column justify-content-center">
-                                                    <p class="<?=$contentClass?> p-2 border border-secondary rounded-pill mb-0 text-wrap"><?=$contenu?></p>
-                                                    <p class="px-2 fst-italic" id="date"><?=$datetime?></p>
-                                                </div>
-                                                <?php
-                                                }
-                                    }
-                                        }
-                                else {
-                                    ?>
-                                    <div class="text-center mt-5 pt-5">Sélectionnez ou démarrez une conversation pour voir les messages</div>
-                                    <?php
-                                }
-                            ?>
+                            
                         </div>
                         <div class="col-10 offset-1 align-self-end">
                             <form action="index.php" method="POST" class="d-flex">
-                                <input type="text" class="form-control" name="messageToSend" id="inputMessage" placeholder="Entrez votre message ici">
-                                <input type="hidden" name="ami_id" value="<?=$ami_id?>">
                                 <?php
+                                    if(isset($_GET['ami'])) {
+                                        $ami_id=$_GET['ami'];
+                                    }
                                 ?>
+                                <input type="text" class="form-control" name="messageToSend" id="inputMessage" placeholder="Entrez votre message ici">
+                                <input type="hidden" name="ami_id" id="ami_id" value="<?=$ami_id?>">
                                 <input type="hidden" name="conv_id" value="<?=$id_conv?>">
                                 <button type="submit" name="SendMessage" class="btn fs-4"><i class="fa-solid fa-paper-plane"></i></button>
                             </form>
@@ -251,5 +221,17 @@
             </div>
             <div><?=$erreur?></div>
         </div>
+        <script>
+            setInterval(() => {
+                // document.querySelector('.messages').innerHTML= new Date().toLocaleTimeString(); //Test
+                console.log(`getMessages.php?ami=document.querySelector('#ami_id').value`);
+                let ami_id=document.querySelector('#ami_id').value;
+                fetch(`getMessages.php?ami=ami_id`);
+                    .then(response => response.text())
+                    .then(html => {
+                        document.querySelector('.messages').innerHTML = html;
+                    })
+            }, 1000);
+        </script>
 </body>
 </html>
