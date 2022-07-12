@@ -20,23 +20,24 @@
                     <h3 class="col-12 mx-auto my-5">Mot de passe</h3>
                 </div>
                 <div class="col-5">
-                    <h3 class="col-12 mx-auto my-5">Votre nom</h3>
+                    <h3 class="col-12 mx-auto my-5">
+                        <?php if (isset($_SESSION["utilisateur"]))?></h3>
                     <h3 class="col-12 mx-auto my-5">Votre pseudo</h3>
                     <h3 class="col-12 mx-auto my-5">Votre adresse e-mail</h3>
                     <h3 class="col-12 mx-auto my-5">Votre mot de passe</h3>
                 </div>
                 <div class="col-1">
                     <h3 class="col-12 mx-auto my-5">
-                        <button type="submit" name="SendMessage" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button type="submit" name="nomComplet" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
                     </h3>
                     <h3 class="col-12 mx-auto my-5">
-                        <button type="submit" name="SendMessage" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button type="submit" name="pseudo" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
                     </h3>
                     <h3 class="col-12 mx-auto my-5">
-                        <button type="submit" name="SendMessage" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button type="submit" name="email" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
                     </h3>
                     <h3 class="col-12 mx-auto my-5">
-                        <button type="submit" name="SendMessage" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button type="submit" name="mdp" class="btn fs-4 p-0 m-0"><i class="fa-solid fa-paper-plane"></i></button>
                     </h3>
                 </div>
             </div>

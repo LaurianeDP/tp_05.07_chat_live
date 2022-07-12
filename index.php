@@ -114,7 +114,7 @@
                                         $last_message=$last_message_result['contenu'];
                                     };
                                 ?>
-                                <!-- Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté-->
+                                <!-- Ici chaque ami a un lien vers une conversation entre lui et l'utilisateur connecté-->
                                 <div class="d-grid">
                                     <a class="btn border-2 btn-outline-dark text-light border-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
                                         <p class="text-end p-0"><?=$last_message?></p>
