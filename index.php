@@ -219,12 +219,11 @@
                 fetch('ajoutMessage.php', options)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    document.querySelector('#conv_id').value=data.conv_id;
                 });
             })
 
             setInterval(() => {
-                // document.querySelector('.messages').innerHTML= new Date().toLocaleTimeString(); //Test
                 let ami_id=document.querySelector('#ami_id').value;
                 let conv_id=document.querySelector('#conv_id').value;
                 fetch(`getMessages.php?ami=${ami_id}&conv=${conv_id}`)
