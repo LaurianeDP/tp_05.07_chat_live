@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 11 juil. 2022 à 14:50
+-- Généré le : mar. 12 juil. 2022 à 09:27
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -31,8 +31,8 @@ USE `chatlt`;
 
 CREATE TABLE `contact_lists` (
   `id_contact_list` int(11) NOT NULL,
-  `id_user1` int(11) NOT NULL,
-  `id_user2` int(11) NOT NULL
+  `id_user1` int(11) DEFAULT NULL,
+  `id_user2` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -54,7 +54,8 @@ INSERT INTO `contact_lists` (`id_contact_list`, `id_user1`, `id_user2`) VALUES
 (12, 6, 8),
 (13, 10, 2),
 (14, 10, 5),
-(15, 11, 3);
+(15, 11, 3),
+(16, 4, 9);
 
 -- --------------------------------------------------------
 
@@ -64,8 +65,8 @@ INSERT INTO `contact_lists` (`id_contact_list`, `id_user1`, `id_user2`) VALUES
 
 CREATE TABLE `conversations` (
   `id_conversation` int(11) NOT NULL,
-  `utilisateur_1` int(11) NOT NULL,
-  `utilisateur_2` int(11) NOT NULL
+  `utilisateur_1` int(11) DEFAULT NULL,
+  `utilisateur_2` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -74,7 +75,8 @@ CREATE TABLE `conversations` (
 
 INSERT INTO `conversations` (`id_conversation`, `utilisateur_1`, `utilisateur_2`) VALUES
 (1, 4, 8),
-(5, 4, 5);
+(5, 4, 5),
+(6, 4, 9);
 
 -- --------------------------------------------------------
 
@@ -84,8 +86,8 @@ INSERT INTO `conversations` (`id_conversation`, `utilisateur_1`, `utilisateur_2`
 
 CREATE TABLE `messages` (
   `id_message` int(11) NOT NULL,
-  `destinataire` int(11) NOT NULL,
-  `emetteur` int(11) NOT NULL,
+  `destinataire` int(11) DEFAULT NULL,
+  `emetteur` int(11) DEFAULT NULL,
   `contenu` varchar(500) NOT NULL,
   `time_stamp` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
   `id_conversation` int(11) NOT NULL
@@ -106,7 +108,8 @@ INSERT INTO `messages` (`id_message`, `destinataire`, `emetteur`, `contenu`, `ti
 (21, 8, 4, 'test', '2022-07-11 10:14:09.384212', 1),
 (22, 5, 4, 'Premier message', '2022-07-11 10:21:54.198683', 1),
 (25, 5, 4, 'Premier message à util4', '2022-07-11 12:28:20.950913', 5),
-(26, 8, 4, 'dernier message à util7', '2022-07-11 12:40:13.022458', 1);
+(26, 8, 4, 'dernier message à util7', '2022-07-11 12:40:13.022458', 1),
+(27, 9, 4, 'premier message à util8', '2022-07-11 14:08:28.814407', 6);
 
 -- --------------------------------------------------------
 
@@ -119,7 +122,7 @@ CREATE TABLE `utilisateurs` (
   `email` varchar(50) NOT NULL,
   `mdp` varchar(120) NOT NULL,
   `pseudo` varchar(50) NOT NULL,
-  `photo` varchar(150) NOT NULL,
+  `photo` varchar(150) DEFAULT NULL,
   `nom_complet` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -148,27 +151,35 @@ INSERT INTO `utilisateurs` (`id_user`, `email`, `mdp`, `pseudo`, `photo`, `nom_c
 -- Index pour la table `contact_lists`
 --
 ALTER TABLE `contact_lists`
-  ADD PRIMARY KEY (`id_contact_list`);
+  ADD PRIMARY KEY (`id_contact_list`),
+  ADD KEY `fk_user1` (`id_user1`),
+  ADD KEY `fk_user2` (`id_user2`);
 
 --
 -- Index pour la table `conversations`
 --
 ALTER TABLE `conversations`
-  ADD PRIMARY KEY (`id_conversation`);
+  ADD PRIMARY KEY (`id_conversation`),
+  ADD KEY `utilisateur_1` (`utilisateur_1`),
+  ADD KEY `utilisateur_2` (`utilisateur_2`);
 
 --
 -- Index pour la table `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id_message`),
-  ADD KEY `messages_ibfk_1` (`id_conversation`);
+  ADD KEY `messages_ibfk_1` (`id_conversation`),
+  ADD KEY `destinataire` (`destinataire`),
+  ADD KEY `emetteur` (`emetteur`);
 
 --
 -- Index pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
   ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `pseudo` (`pseudo`),
+  ADD KEY `nom_complet` (`nom_complet`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -178,25 +189,50 @@ ALTER TABLE `utilisateurs`
 -- AUTO_INCREMENT pour la table `contact_lists`
 --
 ALTER TABLE `contact_lists`
-  MODIFY `id_contact_list` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_contact_list` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT pour la table `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `id_conversation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_conversation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_message` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateurs`
 --
 ALTER TABLE `utilisateurs`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `contact_lists`
+--
+ALTER TABLE `contact_lists`
+  ADD CONSTRAINT `fk_user1` FOREIGN KEY (`id_user1`) REFERENCES `utilisateurs` (`id_user`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_user2` FOREIGN KEY (`id_user2`) REFERENCES `utilisateurs` (`id_user`) ON DELETE SET NULL;
+
+--
+-- Contraintes pour la table `conversations`
+--
+ALTER TABLE `conversations`
+  ADD CONSTRAINT `conversations_ibfk_1` FOREIGN KEY (`utilisateur_1`) REFERENCES `utilisateurs` (`id_user`) ON DELETE SET NULL,
+  ADD CONSTRAINT `conversations_ibfk_2` FOREIGN KEY (`utilisateur_2`) REFERENCES `utilisateurs` (`id_user`) ON DELETE SET NULL;
+
+--
+-- Contraintes pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `fk_destinataire` FOREIGN KEY (`destinataire`) REFERENCES `utilisateurs` (`id_user`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_emetteur` FOREIGN KEY (`emetteur`) REFERENCES `utilisateurs` (`id_user`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
