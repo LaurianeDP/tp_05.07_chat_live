@@ -12,6 +12,7 @@
                 ':nom_complet' => $_POST['nom_complet'],
                 ':mdp' => password_hash($pass, PASSWORD_DEFAULT)
             ));
+            header('Location: ./connexion.php');
         }
     }
 
@@ -49,7 +50,9 @@
 
                 <div class="row col-1 mx-2">
                     <div class="col-4 my-auto">
-                    
+                        <button type="submit" id="bouton" class="btn btn-primary d-flex align-items-center justify-content-center min-width" name="connexionBtn">
+                            <i class="fa-solid fa-paper-plane fs-2"></i>
+                        </button>
                     </div>
                 </div>
 

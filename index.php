@@ -6,7 +6,7 @@
     $id_conv="";
     $erreur="";
 
-    if(!isset) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
+    if(!isset($_SESSION["utilisateur"])) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
     {
         header('Location: ./connexion.php');
     }
@@ -204,7 +204,12 @@
             //Interval pour l'affichage des messages
             setInterval(() => {
                     refreshMessages();
-                }, 3000);
+                }, 1000);
+
+            //Interval pour ramener en bas de l'écran des messages
+            setInterval(() => {
+                document.querySelector('.messages').scrollTo({top: 10000, behavior: 'smooth' });
+            }, 3000);
                 
 
             //Fonction de rafraîchissement de l'affichage de la liste de contact, en dehors de interval pour être intégrée à l'event de l'ajout de message
@@ -236,7 +241,6 @@
                     .then(html => {
                         document.querySelector('.messages').innerHTML = html;
                     });
-                document.querySelector('.messages').scrollTo({top: 10000, behavior: 'smooth' });
             }
         </script>
 </body>

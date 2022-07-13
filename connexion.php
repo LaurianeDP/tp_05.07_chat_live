@@ -10,13 +10,18 @@ if(isset($_SESSION["utilisateur"]) && $_SESSION['utilisateur']="connected" && !e
 
 if(isset($_POST["connexionBtn"])) 
     {
-        $sql = "SELECT email, mdp FROM `utilisateurs` WHERE email=:email";
+        $sql = "SELECT email, mdp, id_user FROM `utilisateurs` WHERE email=:email";
         $requete = $connexion->prepare($sql);
         $requete->execute(array(
             ':email' => $_POST['email']
         ));
         $resultat = $requete->fetch();
-        if(!$resultat)
+        if(!$resultat) //Vérifie si l'adresse email existe
+        {
+            $_SESSION['erreurConnexion'] = '<p class="text-danger fs-5">Identifiants erronés<p>';
+            $_SESSION['utilisateur'] = "disconnected"; //set connexion de l'utilisateur fausse
+        }
+        else if(!password_verify($_POST['mdp'], $resultat['mdp'])) //Vérifie si le mot de passe correspond au hash de la bdd
         {
             $_SESSION['erreurConnexion'] = '<p class="text-danger fs-5">Identifiants erronés<p>';
             $_SESSION['utilisateur'] = "disconnected"; //set connexion de l'utilisateur fausse
@@ -45,11 +50,11 @@ if(isset($_POST["connexionBtn"]))
                     <?=$_SESSION['erreurConnexion']?>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" required="required" placeholder="Adresse e-mail" id="inputEmail4">
+                        <input type="email" class="form-control" name="email" required placeholder="Adresse e-mail" id="inputEmail4">
                     </div>
                     <div class="col-12 mx-auto my-3">
                         <label for="inputPassword4" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" name="mdp" required="required" placeholder="Mot de passe" id="inputPassword4">
+                        <input type="password" class="form-control" name="mdp" required placeholder="Mot de passe" id="inputPassword4">
                     </div>
                     <a href="./inscription.php">Pas encore de compte ?</a>
                 </div>

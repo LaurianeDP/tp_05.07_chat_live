@@ -1,13 +1,15 @@
 <?=
 require_once "./connect.php";
+
 $utilisateur=$_SESSION['util_connect'];
 $ami_id= $_GET['ami'];
 $id_conv=$_GET['conv'];
 
     //SQL sélection liste d'amis
-    $sql_ami="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=:utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_:utilisateur', utilisateurs.pseudo, utilisateurs.id_user AS 'id_ami' FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=:utilisateur OR contact_lists.id_user2=:utilisateur HAVING utilisateurs.id_user=amis_:utilisateur ORDER BY utilisateurs.pseudo;";
+    $sql_ami="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=$utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_$utilisateur', utilisateurs.pseudo, utilisateurs.id_user AS 'id_ami' FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=$utilisateur OR contact_lists.id_user2=$utilisateur HAVING utilisateurs.id_user=amis_$utilisateur ORDER BY utilisateurs.pseudo;";
+    
     $requete=$connexion->prepare($sql_ami);
-    $requete->execute(array(':utilisateur' => $utilisateur));
+    $requete->execute();
     while ($ami= $requete->fetch()) {
         $ami_pseudo=$ami['pseudo'];
         $ami_id=$ami['id_ami'];
