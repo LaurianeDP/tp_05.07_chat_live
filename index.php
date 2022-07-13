@@ -14,9 +14,11 @@
 
 
     // Requête pour récupérer le pseudo de l'utilisateur connecté
-    $sql_pseudo= "SELECT pseudo FROM utilisateurs WHERE id_user=$utilisateur";
+    $sql_pseudo= "SELECT pseudo FROM utilisateurs WHERE id_user=:utilisateur";
     $requete=$connexion->prepare($sql_pseudo);
-    $requete->execute();
+    $requete->execute(array(
+        ':utilisateur' => $utilisateur
+    ));
     $result= $requete->fetch();
     $pseudo=$result['pseudo'];
     
@@ -183,6 +185,7 @@
                 });
                 refreshConv();
                 refreshContacts();
+                document.querySelector('.messages').scrollTo({top: 10000, behavior: 'smooth' });
             } //Fin fonction addMessage
             
             // Interval pour la MaJ de l'id conv
@@ -197,16 +200,9 @@
 
             //Interval pour l'affichage des messages
             setInterval(() => {
-                let ami_id=document.querySelector('#ami_id').value;
-                let conv_id=document.querySelector('#conv_id').value;
-                fetch(`getMessages.php?ami=${ami_id}&conv=${conv_id}`)
-                    .then(response => response.text())
-                    .then(html => {
-                        document.querySelector('.messages').innerHTML = html;
-                    });
-                }, 1000);
+                    refreshMessages();
+                }, 3000);
                 
-                console.log(document.querySelector('.messages').hasChildNodes());
 
             //Fonction de rafraîchissement de l'affichage de la liste de contact, en dehors de interval pour être intégrée à l'event de l'ajout de message
             function refreshContacts() {
@@ -227,6 +223,17 @@
                     .then(data => {
                         document.querySelector('#conv_id').value=data.conv_id;
                     })
+            }
+
+            function refreshMessages() {
+                let ami_id=document.querySelector('#ami_id').value;
+                let conv_id=document.querySelector('#conv_id').value;
+                fetch(`getMessages.php?ami=${ami_id}&conv=${conv_id}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.querySelector('.messages').innerHTML = html;
+                    });
+                document.querySelector('.messages').scrollTo({top: 10000, behavior: 'smooth' });
             }
         </script>
 </body>
