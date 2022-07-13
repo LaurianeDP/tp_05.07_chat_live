@@ -12,6 +12,48 @@
                 ':nom_complet' => $_POST['nom_complet'],
                 ':mdp' => password_hash($pass, PASSWORD_DEFAULT)
             ));
+            //Message automatique de admin à la creation de l'utilisateur
+
+            //Récupère l'id du nouvel utilisateur
+            $sql_id_new_user = "SELECT MAX(id_user) AS 'last_id' FROM utilisateurs";
+            $requete=$connexion->prepare($sql_id_new_user);
+            $requete->execute();
+            $result_id_user=$requete->fetch();
+            $id_user=$result_id_user['last_id'];
+
+            //Créé la conversation
+            $sql_new_conv= "INSERT INTO conversations (utilisateur_1, utilisateur_2) VALUES (:utilisateur, :ami_id)";
+            $requete=$connexion->prepare($sql_new_conv);
+            $requete->execute(array(
+                ':utilisateur' => 15,
+                ':ami_id' => $id_user
+            ));
+
+            // Récupère l'id de la conversation à utiliser
+            $sql_last_conv_select= "SELECT MAX(id_conversation) AS 'last_id' FROM conversations";
+            $requete=$connexion->prepare($sql_last_conv_select);
+            $requete->execute();
+            $result_conv=$requete->fetch();
+            $id_conv=$result_conv['last_id'];
+
+            //Ajoute l'admin dans les contacts du nouvel utilisateur
+            $sql_ajout_ami= "INSERT INTO contact_lists (id_user1, id_user2) VALUES (:utilisateur, :id_to_add)";
+            $requete_ajout_ami=$connexion->prepare($sql_ajout_ami);
+            $requete_ajout_ami->execute(array(
+                ':utilisateur' => 15,
+                ':id_to_add' => $id_user
+            ));
+
+            //Créé le message de l'admin
+            $sql_message= "INSERT INTO `messages` (`destinataire`, `emetteur`, `contenu`, `id_conversation`) VALUES (:ami_id, :utilisateur, :contenu, :id_conv)";
+            $requete_mess=$connexion->prepare($sql_message);
+            $requete_mess->execute(array(
+            ':contenu' => "Bienvenu sur cette application de chat en ligne. Pour ajouter un contact, cliquez sur le bouton burger, puis sur le symbol utilisateur +, saisissez ensuite le pseudo de votre ami et appuyez sur 'ajouter'. Amusez-vous bien !",
+            ':utilisateur' => 15,
+            ':ami_id' => $id_user,
+            ':id_conv' => $id_conv
+        ));
+
             header('Location: ./connexion.php');
         }
     }

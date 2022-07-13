@@ -39,6 +39,9 @@
         .header {
             background-color: lightgray;
         }
+        .bubble {
+            max-width: 50%!important;
+        }
 
     </style>
     <script src="https://kit.fontawesome.com/34451dc3f2.js" crossorigin="anonymous"></script>

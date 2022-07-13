@@ -22,12 +22,13 @@
                     $destinataire=$conv['destinataire'];
                     $contenu=$conv['contenu'];
                     $datetime=$conv['time_stamp'];
-                    $class=($emetteur==$utilisateur) ? "align-self-end text-end" : "align-self-start";
+                    $class=($emetteur==$utilisateur) ? "align-self-end text-end ms-4" : "align-self-start";
                     $contentClass=($emetteur==$utilisateur) ? "bg-success pe-4" : "bg-light ps-3";
+                    $dateClass=($emetteur==$utilisateur) ? "text-end pe-2" : "text-start ps-2";
                 ?>
-                    <div class="<?=$class?> mx-2 my-1 d-flex flex-column justify-content-center">
-                        <p class="<?=$contentClass?> p-2 border border-secondary rounded-pill mb-0 text-wrap"><?=$contenu?></p>
-                        <p class="px-2 fst-italic" id="date"><?=$datetime?></p>
+                    <div class="<?=$class?> mx-1 my-1 d-flex flex-column justify-content-center bubble">
+                        <p class="p-1 <?=$contentClass?> border border-secondary rounded-3 mb-0 text-wrap"><?=$contenu?></p>
+                        <p class="fst-italic <?=$dateClass?>" id="date"><?=$datetime?></p>
                     </div>
                 <?php
                     }
