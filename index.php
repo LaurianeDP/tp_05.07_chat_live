@@ -79,7 +79,7 @@
                 <div class="col-3 text-light border-top p-2 lef-menu d-flex flex-column h-100" id="contact-list" style="background-color: #444444;">
                     <div class="row d-flex flex-column align-content-between">
                         <!-- Ici la liste d'amis -->
-                        <div class="col-12 amis overflow-auto">
+                        <div class="col-12 amis">
                             <!-- Ajax pour afficher la liste d'amis -->
                         </div>
                     </div>
@@ -135,7 +135,6 @@
                     <div class="row p-0 m-0 w-100">
                         <div class="col-10 px-1 pt-3 d-flex offset-1 flex-column overflow-auto messages">
                             <!-- Ici de l'ajax pour afficher les messages au fur et à mesure qu'ils sont envoyés -->
-                            
                         </div>
                         <div class="col-10 offset-1 align-self-end">
                             <div class="d-flex">

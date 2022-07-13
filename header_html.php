@@ -26,6 +26,8 @@
         .amis {
             min-height: 55vh;
             max-width: 70vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
         #date {
             font-size: 0.8rem;
@@ -41,6 +43,14 @@
         }
         .bubble {
             max-width: 50%!important;
+        }
+        .ami-btn {
+            overflow: hidden!important;
+        }
+        .lastMess {
+            text-overflow: ellipsis!important;
+            white-space: nowrap;
+            overflow: hidden!important;
         }
 
     </style>

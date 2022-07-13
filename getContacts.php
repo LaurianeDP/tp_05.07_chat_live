@@ -36,8 +36,8 @@ $id_conv=$_GET['conv'];
     //Ici chaque ami à un lien vers une conversation entre lui et l'utilisateur connecté
     ?>
     <div class="d-grid">
-        <a class="btn border-2 btn-outline-dark text-light border-light m-0 text-start p-1" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
-            <p class="text-end p-0"><?=$last_message?></p>
+        <a class="btn border-2 btn-outline-dark text-light border-light m-0 text-start p-1 ami-btn" href="index.php?ami=<?=$ami_id?>"><?=$ami_pseudo?> 
+            <p class="text-end ps-4 lastMess"><?=$last_message?></p>
         </a>
     </div>
     <HR>
