@@ -18,10 +18,10 @@
                     <h3 class="col-12 mx-auto my-5">Pseudo</h3>
                     <h3 class="col-12 mx-auto my-5">Adresse e-mail</h3>
                     <h3 class="col-12 mx-auto my-5">Mot de passe</h3>
+                    <h5><a href="./index.php">Retour</a></h3>
                 </div>
                 <div class="col-5">
-                    <h3 class="col-12 mx-auto my-5">
-                        <?php if (isset($_SESSION["utilisateur"]))?></h3>
+                    <h3 class="col-12 mx-auto my-5"><?= $_SESSION['nom_complet']; ?></h3>
                     <h3 class="col-12 mx-auto my-5">Votre pseudo</h3>
                     <h3 class="col-12 mx-auto my-5">Votre adresse e-mail</h3>
                     <h3 class="col-12 mx-auto my-5">Votre mot de passe</h3>
@@ -43,6 +43,5 @@
             </div>
         </div>
         
-        <a href="./index.php">Retour</a>
     </div>
 </body>
