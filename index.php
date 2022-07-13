@@ -1,16 +1,17 @@
 <?php
     include_once "connect.php";
+    
+    if(!isset($_SESSION["utilisateur"]) && !isset($_SESSION['util_connect']) && empty($_SESSION['util_connect']) ) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
+    {
+        header("Location: https://dev-team.fr/lauriane/chat/connexion.php");
+    }
+    $utilisateur=$_SESSION['util_connect'];
+    
     include_once "header_html.php";
-
+    
     $ami_id="";
     $id_conv="";
     $erreur="";
-
-    if(!isset($_SESSION["utilisateur"])) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
-    {
-        header('Location: ./connexion.php');
-    }
-    $utilisateur=$_SESSION['util_connect'];
 
 
     // Requête pour récupérer le pseudo de l'utilisateur connecté
