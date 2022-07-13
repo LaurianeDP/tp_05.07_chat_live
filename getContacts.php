@@ -1,4 +1,5 @@
-<?=
+<?php
+
 require_once "./connect.php";
 
 $utilisateur=$_SESSION['util_connect'];
