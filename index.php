@@ -6,7 +6,7 @@
     $id_conv="";
     $erreur="";
 
-    if(!isset($_SESSION["utilisateur"])) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
+    if(!isset) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
     {
         header('Location: ./connexion.php');
     }
