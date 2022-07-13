@@ -3,10 +3,10 @@
     
     if(!isset($_SESSION["utilisateur"]) && !isset($_SESSION['util_connect']) && empty($_SESSION['util_connect']) ) //Si l'utilisateur n'est pas connecté, renvoit à la page de connexion
     {
-        header("Location: https://dev-team.fr/lauriane/chat/connexion.php");
+        header("Location: ./connexion.php");
     }
     $utilisateur=$_SESSION['util_connect'];
-    
+
     include_once "header_html.php";
     
     $ami_id="";
@@ -31,7 +31,7 @@
         $requete->execute(array(':id_ami'=>$id_ami));
         $result_ami= $requete->fetch();
         $ami_pseudo=$result_ami['pseudo'];
-        $nom_conv="<h3>Conversations de $pseudo avec $ami_pseudo</h3>";
+        $nom_conv="<h3>Conversation de $pseudo avec $ami_pseudo</h3>";
     }
     else {
         $nom_conv="";
