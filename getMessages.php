@@ -14,9 +14,9 @@
     <?php
         }
         else {
-            $sql_conv= "SELECT * FROM `messages` WHERE id_conversation=$id_conv ORDER BY time_stamp";
+            $sql_conv= "SELECT * FROM `messages` WHERE id_conversation=:id_conv ORDER BY time_stamp";
             $requete_conv=$connexion->prepare($sql_conv);
-            $requete_conv->execute();
+            $requete_conv->execute(array(':id_conv' => $id_conv));
                 while ($conv=$requete_conv->fetch()) {
                     $emetteur=$conv['emetteur'];
                     $destinataire=$conv['destinataire'];

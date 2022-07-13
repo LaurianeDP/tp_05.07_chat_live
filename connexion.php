@@ -10,11 +10,10 @@ if(isset($_SESSION["utilisateur"]) && $_SESSION['utilisateur']="connected" && !e
 
 if(isset($_POST["connexionBtn"])) 
     {
-        $sql = "SELECT * FROM `utilisateurs` WHERE email=:email AND mdp=:pass";
+        $sql = "SELECT email, mdp FROM `utilisateurs` WHERE email=:email";
         $requete = $connexion->prepare($sql);
         $requete->execute(array(
-            ':email' => $_POST['email'],
-            ':pass' => $_POST['mdp']
+            ':email' => $_POST['email']
         ));
         $resultat = $requete->fetch();
         if(!$resultat)

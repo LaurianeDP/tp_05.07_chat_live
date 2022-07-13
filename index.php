@@ -25,9 +25,9 @@
     //Génère la phrase du header au clic sur le nom d'un ami
     if(isset($_GET['ami'])) {
         $id_ami=$_GET['ami'];
-        $sql="SELECT pseudo FROM utilisateurs WHERE id_user=$id_ami";
+        $sql="SELECT pseudo FROM utilisateurs WHERE id_user=:id_ami";
         $requete=$connexion->prepare($sql);
-        $requete->execute();
+        $requete->execute(array(':id_ami'=>$id_ami));
         $result_ami= $requete->fetch();
         $ami_pseudo=$result_ami['pseudo'];
         $nom_conv="<h3>Conversations de $pseudo avec $ami_pseudo</h3>";
@@ -48,9 +48,12 @@
         }
         else {
             $id_to_add=$result_pseudo_ami['id_user'];
-            $sql_ajout_ami= "INSERT INTO contact_lists (id_user1, id_user2) VALUES ($utilisateur, $id_to_add)";
+            $sql_ajout_ami= "INSERT INTO contact_lists (id_user1, id_user2) VALUES (:utilisateur, :id_to_add)";
             $requete_ajout_ami=$connexion->prepare($sql_ajout_ami);
-            $requete_ajout_ami->execute();
+            $requete_ajout_ami->execute(array(
+                ':utilisateur' => $utilisateur,
+                ':id_to_add' => $id_to_add
+            ));
         }
     };
 ?>

@@ -3,13 +3,14 @@
 
     if($_SERVER['REQUEST_METHOD']==='POST') {
         if(isset($_POST['connexionBtn']) && !empty($_POST['email']) && !empty($_POST['pseudo']) && !empty($_POST['nom_complet']) && !empty($_POST['mdp'])) {
+            $pass= $_POST['mdp'];
             $sql="INSERT INTO utilisateurs (email, pseudo, nom_complet, mdp) VALUES (:email, :pseudo, :nom_complet, :mdp)";
             $requete=$connexion->prepare($sql);
             $requete->execute(array(
                 ':email' => $_POST['email'],
                 ':pseudo' => $_POST['pseudo'],
                 ':nom_complet' => $_POST['nom_complet'],
-                ':mdp' => $_POST['mdp'],
+                ':mdp' => password_hash($pass, PASSWORD_DEFAULT)
             ));
         }
     }

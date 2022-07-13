@@ -5,15 +5,18 @@ $ami_id= $_GET['ami'];
 $id_conv=$_GET['conv'];
 
     //SQL sélection liste d'amis
-    $sql_ami="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=$utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_$utilisateur', utilisateurs.pseudo, utilisateurs.id_user AS 'id_ami' FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=$utilisateur OR contact_lists.id_user2=$utilisateur HAVING utilisateurs.id_user=amis_$utilisateur ORDER BY utilisateurs.pseudo;";
+    $sql_ami="SELECT contact_lists.id_user1, contact_lists.id_user2, if(contact_lists.id_user1=:utilisateur, contact_lists.id_user2, contact_lists.id_user1) AS 'amis_:utilisateur', utilisateurs.pseudo, utilisateurs.id_user AS 'id_ami' FROM `contact_lists`, utilisateurs WHERE contact_lists.id_user1=:utilisateur OR contact_lists.id_user2=:utilisateur HAVING utilisateurs.id_user=amis_:utilisateur ORDER BY utilisateurs.pseudo;";
     $requete=$connexion->prepare($sql_ami);
-    $requete->execute();
+    $requete->execute(array(':utilisateur' => $utilisateur));
     while ($ami= $requete->fetch()) {
         $ami_pseudo=$ami['pseudo'];
         $ami_id=$ami['id_ami'];
-        $sql_conv2= "SELECT * FROM conversations WHERE (utilisateur_1=$utilisateur OR utilisateur_2=$utilisateur) AND (utilisateur_1=$ami_id OR utilisateur_2=$ami_id)";
+        $sql_conv2= "SELECT * FROM conversations WHERE (utilisateur_1=:utilisateur OR utilisateur_2=:utilisateur) AND (utilisateur_1=:ami_id OR utilisateur_2=:ami_id)";
         $requete_conv2=$connexion->prepare($sql_conv2);
-        $requete_conv2->execute();
+        $requete_conv2->execute(array(
+            ':utilisateur' => $utilisateur,
+            ':ami_id'=>$ami_id
+    ));
         $conv_result2=$requete_conv2->fetch();
         if(!$conv_result2) {
             $id_conv2="";
@@ -21,9 +24,9 @@ $id_conv=$_GET['conv'];
         }
         else {
             $id_conv2=$conv_result2['id_conversation'];
-            $sql_last_message= "SELECT contenu FROM messages WHERE id_conversation=$id_conv2 ORDER BY time_stamp DESC LIMIT 1";
+            $sql_last_message= "SELECT contenu FROM messages WHERE id_conversation=:id_conv2 ORDER BY time_stamp DESC LIMIT 1";
             $requete_last_message=$connexion->prepare($sql_last_message);
-            $requete_last_message->execute();
+            $requete_last_message->execute(array(':id_conv2' => $id_conv2));
             $last_message_result=$requete_last_message->fetch();
             $last_message=$last_message_result['contenu'];
         };
