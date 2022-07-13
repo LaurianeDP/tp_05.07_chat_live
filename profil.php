@@ -31,6 +31,15 @@
     };
     
     //Modification de l'adresse email
+    if(isset($_POST['changeEmail']) && !empty($_POST['newEmail'])) {
+        $sql_update_email="UPDATE utilisateurs SET email=:newEmail WHERE id_user=:utilisateur";
+        $requete=$connexion->prepare($sql_update_email);
+        $requete->execute(array(
+            ':newEmail' => $_POST['newEmail'],
+            ':utilisateur' => $utilisateur
+        ));
+        header('Location: profil.php');
+    };
     
     include_once "header_html.php";
 ?>
@@ -55,7 +64,7 @@
                     <h3 class="my-5"><?=$resultat['nom_complet']?></h3>
                     <h3 class="my-5"><?=$resultat['pseudo']?></h3>
                     <h3 class="my-5"><?=$resultat['email']?></h3>
-                    <!-- <h3 class="my-5">Votre mot de passe</h3> -->
+                    <!-- <h3 class="my-5">**********</h3> -->
                 </div>
                 <!-- Inputs de modification -->
                 <div class="col-3">
@@ -77,6 +86,12 @@
                             <button type="submit" name="changeEmail" class="btn btn-secondary h-25">Confirmer</button>
                         </form>
                     </div>
+                    <!-- <div class="my-5 invisible" id="newPass">
+                        <form action="profil.php" class="d-flex" method="POST">
+                            <input class="form-control" type="text" name="newEmail" placeholder="Nouvelle adresse">
+                            <button type="submit" name="changeEmail" class="btn btn-secondary h-25">Confirmer</button>
+                        </form>
+                    </div> -->
                 </div>
                 <!-- Boutons de modification -->
                 <div class="col-1">
