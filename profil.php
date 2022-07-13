@@ -20,6 +20,15 @@
         header('Location: profil.php');
     };
     //Modification du pseudo
+    if(isset($_POST['changePseudo']) && !empty($_POST['newPseudo'])) {
+        $sql_update_pseudo="UPDATE utilisateurs SET pseudo=:newPseudo WHERE id_user=:utilisateur";
+        $requete=$connexion->prepare($sql_update_pseudo);
+        $requete->execute(array(
+            ':newPseudo' => $_POST['newPseudo'],
+            ':utilisateur' => $utilisateur
+        ));
+        header('Location: profil.php');
+    };
     
     //Modification de l'adresse email
     
